@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Aviation.cs" />
+    <Compile Include="EmptyTarget.cs" />
+    <Compile Include="MineThower.cs" />
+    <Compile Include="Target.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

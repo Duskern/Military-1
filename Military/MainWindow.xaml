@@ -6,14 +6,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="Military maneuvers"   
         Icon="C:\Users\Yulian\Desktop\Military\Military\Officer.png" 
-        Width="1000"
+        Width="1043.5"
         Height="765"
         ResizeMode="NoResize"
         mc:Ignorable="d">
     <Grid Background="Black">
         <StackPanel VerticalAlignment="Top">
             <Menu Width="Auto" Height="20">
-                <MenuItem Header="Parallelogram options">
+                <MenuItem Header="Options">
                     <MenuItem x:Name="FindingAll"
                               Width="270"
                               HorizontalAlignment="Left"
@@ -29,16 +29,16 @@
             </Menu>
         </StackPanel>
         <Canvas x:Name="root_Canvas"
-                Width="694"
+                Width="734"
                 Height="617"
-                Margin="289,20,0,0"
+                Margin="304,20,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="Black"
                 Cursor="Pen">
         </Canvas>
         <Border x:Name="Border_Option"
-                Margin="0,20,710,87"
+                Margin="0,20,734,87"
                 Background="Black"
                 BorderBrush="#FF2C32C3"
                 BorderThickness="4"
@@ -74,14 +74,14 @@
                                   Color="#FFEC800F" />
             </DataGrid.Effect>
         </DataGrid>
-        <Label Margin="12,41,937,623"
+        <Label Margin="32,27,917,637"
                Content="6"
                FontFamily="Wingdings"
                FontSize="25"
                FontWeight="Bold"
                Foreground="#FFB7D414" />
         <Label x:Name="OptionStartLabel"
-               Margin="38,43,0,0"
+               Margin="58,29,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Military maneurus"
@@ -89,24 +89,24 @@
                FontStyle="Italic"
                Foreground="#FFD69D15"
                RenderTransformOrigin="-4.829,-1.288" />
-        <TextBox x:Name="targets_Count"
+        <TextBox x:Name="militaries_Count"
                  Width="41"
                  Height="23"
-                 Margin="206,90,0,0"
+                 Margin="211,72,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  FontSize="16"
                  Text="20"
                  TextWrapping="Wrap" />
-        <Label Margin="26,84,0,0"
+        <Label Margin="31,66,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               Content="Input maximim targets :"
+               Content="Input maximum targets :"
                FontSize="16"
                FontStyle="Italic"
                Foreground="#FFC415D6"
                RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="10,74,728,516"
+        <Border Margin="18,60,755,467"
                 BorderBrush="#FF73CB0F"
                 BorderThickness="3"
                 CornerRadius="25">
@@ -120,26 +120,26 @@
                  IsReadOnlyCaretVisible="True" 
                  Width="25"
                  Height="23"
-                 Margin="38,277,0,0"
+                 Margin="38,315,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  FontSize="16"
                  TextWrapping="Wrap" BorderBrush="White" SelectionBrush="White" Foreground="White" />
         <Button x:Name="button_Start"
                 Width="222"
-                Margin="27,130,0,0"
+                Margin="32,557,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Start military maneurus"
-                RenderTransformOrigin="2.862,0.366" />
-        <Label Margin="6,226,943,437"
+                RenderTransformOrigin="2.862,0.366" Click="button_Start_Click" />
+        <Label Margin="18,264,931,399"
                Content="9"
                FontFamily="Wingdings"
                FontSize="25"
                FontWeight="Bold"
                Foreground="Crimson" />
         <Label x:Name="OptionStateLabel"
-               Margin="38,228,0,0"
+               Margin="57,269,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Targets state :"
@@ -148,7 +148,7 @@
                Foreground="#FF23E3EC"
                RenderTransformOrigin="-4.829,-1.288" />
         <Label Width="140"
-               Margin="74,273,0,0"
+               Margin="74,311,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Target 0% hp lost"
@@ -160,13 +160,13 @@
             IsReadOnlyCaretVisible="True" 
             Width="25"
             Height="24"
-            Margin="38,313,0,0"
+            Margin="38,351,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             TextWrapping="Wrap" BorderBrush="Lime" Background="Lime" Foreground="Lime" SelectionBrush="Lime" />
         <Label Width="173"
-            Margin="74,309,0,0"
+            Margin="74,347,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 35-45% hp lost"
@@ -178,13 +178,13 @@
             IsReadOnlyCaretVisible="True" 
             Width="25"
             Height="24"
-            Margin="38,349,0,0"
+            Margin="38,387,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             TextWrapping="Wrap" BorderBrush="Yellow" Background="Yellow" Foreground="Yellow" SelectionBrush="Yellow" />
         <Label Width="140"
-            Margin="74,345,0,0"
+            Margin="74,383,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 50% hp lost"
@@ -196,13 +196,13 @@
             IsReadOnlyCaretVisible="True" 
             Width="25"
             Height="24"
-            Margin="38,385,0,0"
+            Margin="38,423,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             TextWrapping="Wrap" BorderBrush="Coral" Background="Coral" Foreground="Coral" SelectionBrush="Coral" />
         <Label Width="140"
-            Margin="74,381,0,0"
+            Margin="74,419,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 50-85% hp lost"
@@ -214,13 +214,13 @@
             IsReadOnlyCaretVisible="True" 
             Width="25"
             Height="24"
-            Margin="38,421,0,0"
+            Margin="38,459,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             TextWrapping="Wrap" BorderBrush="OrangeRed" Background="OrangeRed" Foreground="OrangeRed" SelectionBrush="OrangeRed" />
         <Label Width="173"
-            Margin="74,417,0,0"
+            Margin="74,455,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 85-99% hp lost"
@@ -232,13 +232,13 @@
             IsReadOnlyCaretVisible="True" 
             Width="25"
             Height="24"
-            Margin="38,457,0,0"
+            Margin="38,495,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             TextWrapping="Wrap" BorderBrush="Red" Background="Red" Foreground="Red" SelectionBrush="Red" />
         <Label Width="158"
-            Margin="74,453,0,0"
+            Margin="74,491,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 100% hp lost"
@@ -246,8 +246,8 @@
             FontStyle="Italic"
             Foreground="Red" 
             RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="12,262,726,234"
-            BorderBrush="#FF73CB0F"
+        <Border Margin="18,302,755,99"
+            BorderBrush="Purple"
             BorderThickness="3"
             CornerRadius="25">
             <Border.Effect>
@@ -256,5 +256,53 @@
                     Color="#FF06D9EE" />
             </Border.Effect>
         </Border>
+        <Button x:Name="button_Generate"
+            Width="188"
+            Margin="50,184,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Generate militaries" 
+            RenderTransformOrigin="2.862,0.366" Click="button_Generate_Click" />
+        <TextBox x:Name="militaries_Time"
+            Width="41"
+            Height="23"
+            Margin="206,523,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="10"
+            TextWrapping="Wrap" />
+        <Label Margin="32,519,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Input time maneuvers :"
+            FontSize="16"
+            FontStyle="Italic"
+            Foreground="Blue"
+            RenderTransformOrigin="-4.829,-1.288" />
+        <Label x:Name="count_Targets" Margin="39,92,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Count targets :"
+            FontSize="16"
+            FontStyle="Italic"
+            Foreground="White"
+            RenderTransformOrigin="-4.829,-1.288" />
+        <Label x:Name="count_MineThowers" Margin="39,120,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Count mine-thowers :"
+            FontSize="16"
+            FontStyle="Italic"
+            Foreground="#FF08E83B"
+            RenderTransformOrigin="-4.829,-1.288" />
+        <Label x:Name="count_Aviations" Margin="39,148,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Count aviations :"
+            FontSize="16"
+            FontStyle="Italic"
+            Foreground="#FF1EA6F3"
+            RenderTransformOrigin="-4.829,-1.288" />
     </Grid>
 </Window>
