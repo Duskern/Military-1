@@ -30,7 +30,7 @@ namespace Military
             {
                 Thread.Sleep(1500);
                 int TargetIndex = Random.Next(Targets.Count);
-                if (Targets[TargetIndex].HealthPoints > 25 && !Targets[TargetIndex].Missed)
+                if (Targets[TargetIndex].HealthPoints > 25)
                 {
                     CountShell--;
                     if (CountShell > 0)

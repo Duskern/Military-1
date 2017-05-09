@@ -48,7 +48,7 @@ namespace Military
                     else
                     {
                         CountMiss++;
-                        Targets.Add(new Target(x, y, true));
+                        Targets.Add(new EmptyTarget(x, y));
                     }
                 }
             }
