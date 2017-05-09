@@ -10,33 +10,47 @@ namespace Military
 {
     public class MineThower
     {
-        Random random = new Random();
-
         public int CountHit { get; set; }
         public int TotalDamage { get; set; }
         public int CountMiss{ get; set; }
+        Random Random { get; set; }
 
-        public MineThower()
+        public MineThower( Random random)
         {
             CountHit = 0;
             CountMiss = 0;
             TotalDamage = 0;
+            Random = random;
         } 
 
-        public void Shoot(ref ObservableCollection<Target> targets)
+        public void Shoot(ref ObservableCollection<Target> Targets, int currentTime, int commonTime)
         {
-            Thread.Sleep(100);
-            int TargetIndex = random.Next(targets.Count);
-            int damage = random.Next(35, 45);
-            targets[TargetIndex].HealthPoints -= damage;
-            if (targets[TargetIndex].GetType() != typeof(Target))
+            while (currentTime < commonTime)
             {
-                CountMiss++; 
-            }
-            else
-            {
-                CountHit++;
-                TotalDamage += damage;
+                Thread.Sleep(1000);
+                int x = Random.Next(60, 790);
+                int y = Random.Next(45, 577);
+                int damage = Random.Next(35, 45);
+                for (int i = 0; i < Targets.Count; i++)
+                {
+                    if (Targets[i].HealthPoints <= 0)
+                    {
+                        break;
+                    }
+                    else if (Targets[i].X >= x - 25 && Targets[i].X <= x + 25 &&
+                        Targets[i].Y >= y - 25 && Targets[i].Y <= y + 25)
+                    {
+                        Targets[i].HealthPoints -= damage;
+                        CountHit++;
+                        TotalDamage += damage;
+                        break;
+                    }
+                    else
+                    {
+                        CountMiss++;
+                        Targets.Add(new Target(x, y, true));
+                    }
+                }
             }
         }
     }

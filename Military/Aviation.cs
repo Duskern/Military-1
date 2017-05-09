@@ -10,38 +10,37 @@ namespace Military
 {
     public class Aviation
     {
-        Random random = new Random();
-
         private const int damage_degree = 50;
         public int CountShell { get; set; } 
         public int CountHit { get; set; } 
         public int TotalDamage { get; set; }
+        Random Random { get; set; }
 
-        public Aviation()
+        public Aviation( Random random)
         {
             CountShell = 20;
             CountHit = 0;
-            TotalDamage = 0;
-        } 
+            TotalDamage = 0; 
+            Random = random;
+        }
 
-        public void Shoot(ref ObservableCollection<Target> targets)
-        {
-            Thread.Sleep(1000);
-            int TargetIndex = random.Next(targets.Count);
-            while(targets[TargetIndex] == null)
+        public void Shoot(ref ObservableCollection<Target> Targets, int currentTime, int commonTime)
+        { 
+            while (currentTime < commonTime)
             {
-                TargetIndex = random.Next(targets.Count);
-            }
-            if (targets[TargetIndex].HealthPoints > 25)
-            {
-                CountShell--;
-                if (CountShell > 0)
-                {  
-                    targets[TargetIndex].HealthPoints -= damage_degree;
-                    CountHit++;
-                    TotalDamage += damage_degree;
+                Thread.Sleep(1500);
+                int TargetIndex = Random.Next(Targets.Count);
+                if (Targets[TargetIndex].HealthPoints > 25 && !Targets[TargetIndex].Missed)
+                {
+                    CountShell--;
+                    if (CountShell > 0)
+                    {
+                        Targets[TargetIndex].HealthPoints -= damage_degree;
+                        CountHit++;
+                        TotalDamage += damage_degree;
+                    }
                 }
-            }
+            }            
         } 
 
     }

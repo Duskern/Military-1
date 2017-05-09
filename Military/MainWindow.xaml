@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="Military maneuvers"   
         Icon="C:\Users\Yulian\Desktop\Military\Military\Officer.png" 
-        Width="1043.5"
+        Width="1178.5"
         Height="765"
         ResizeMode="NoResize"
-        mc:Ignorable="d">
+        mc:Ignorable="d" Closing="Window_Closing">
     <Grid Background="Black">
         <StackPanel VerticalAlignment="Top">
             <Menu Width="Auto" Height="20">
@@ -29,16 +29,16 @@
             </Menu>
         </StackPanel>
         <Canvas x:Name="root_Canvas"
-                Width="734"
+                Width="863"
                 Height="617"
-                Margin="304,20,0,0"
+                Margin="309,27,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="Black"
                 Cursor="Pen">
         </Canvas>
         <Border x:Name="Border_Option"
-                Margin="0,20,734,87"
+                Margin="0,20,863,87"
                 Background="Black"
                 BorderBrush="#FF2C32C3"
                 BorderThickness="4"
@@ -106,7 +106,7 @@
                FontStyle="Italic"
                Foreground="#FFC415D6"
                RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="18,60,755,467"
+        <Border Margin="18,60,886,467"
                 BorderBrush="#FF73CB0F"
                 BorderThickness="3"
                 CornerRadius="25">
@@ -246,7 +246,7 @@
             FontStyle="Italic"
             Foreground="Red" 
             RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="18,302,755,99"
+        <Border Margin="18,300,886,99"
             BorderBrush="Purple"
             BorderThickness="3"
             CornerRadius="25">

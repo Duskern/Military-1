@@ -11,13 +11,15 @@ namespace Military
 {
     public class Target
     {
-        protected int _healthPoints;     
-         
+        private int _healthPoints;     
+        
         public int X { get; set; }  
 
-        public int Y { get; set; } 
+        public int Y { get; set; }   
 
-        public virtual int HealthPoints
+        public bool Missed { get; set; }
+
+        public int HealthPoints
         {
             get
             {
@@ -38,11 +40,12 @@ namespace Military
             }
         }
 
-        public Target(int x , int y)
+        public Target(int x , int y, bool missed)
         {
             _healthPoints = 100;
             X = x;
             Y = y;
+            Missed = missed;
         }
     }
 }
