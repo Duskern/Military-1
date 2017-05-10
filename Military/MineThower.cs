@@ -13,7 +13,7 @@ namespace Military
         public int CountHit { get; set; }
         public int TotalDamage { get; set; }
         public int CountMiss{ get; set; }
-        Random Random { get; set; }
+        public Random Random { get; set; }
 
         public MineThower( Random random)
         {
@@ -33,12 +33,13 @@ namespace Military
                 int damage = Random.Next(35, 45);
                 for (int i = 0; i < Targets.Count; i++)
                 {
-                    if (Targets[i].HealthPoints <= 0)
+                    if (Object.ReferenceEquals(null, Targets[i]) || Targets[i] == null || Targets[i].Equals(null))
                     {
+                        Targets.Remove(Targets[i]);
                         break;
                     }
-                    else if (Targets[i].X >= x - 25 && Targets[i].X <= x + 25 &&
-                        Targets[i].Y >= y - 25 && Targets[i].Y <= y + 25)
+                    if (Targets[i].X >= x - 30 && Targets[i].X <= x + 30 &&
+                        Targets[i].Y >= y - 30 && Targets[i].Y <= y + 30 && Targets[i]!=null)
                     {
                         Targets[i].HealthPoints -= damage;
                         CountHit++;

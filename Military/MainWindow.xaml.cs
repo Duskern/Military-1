@@ -84,6 +84,12 @@ namespace Military
                 {
                     item.Abort();
                 }
+                if (MineThowerList != null && TargetList!=null)
+                {
+                    int k = MineThowerList.Count;
+                    int tt = root_Canvas.Children.Count;
+                    int z = TargetList.Count;
+                }
                 AviationsThreads.Clear();
                 Mine_ThrowersThreads.Clear();
                 button_Generate.IsEnabled = false;
@@ -101,7 +107,7 @@ namespace Military
                 {
                     x = random.Next(60, 790);
                     y = random.Next(45, 577);
-                    Target target = new Target(x, y, false);
+                    Target target = new Target(x, y);
                     if (TargetList.Count == 0)
                     {
                         TargetList.Add(target);
@@ -197,7 +203,7 @@ namespace Military
             thread = new Thread(new ThreadStart(StartManeevers));
             thread.Start();
             dispatcherTimerWork.Tick += new EventHandler(dispatcherTimerWork_Tick);
-            dispatcherTimerWork.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimerWork.Interval = new TimeSpan(0, 0, 0, 1);
             dispatcherTimerWork.Start();
             button_Start.IsEnabled = false;
         }
@@ -244,6 +250,7 @@ namespace Military
             }
             else
             {
+
                 for (int i = 0; i < TargetList.Count; i++)
                 {
                     DrawTarget(TargetList[i]);
@@ -255,29 +262,32 @@ namespace Military
       
         public void DrawTarget(Target target)
         {
-            simplePoint = new Ellipse();
-            simplePoint.Width = 10;
-            simplePoint.Height = 10;
-            simplePoint.StrokeThickness = 5;
-            simplePoint.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-            simplePoint.Tag = (target.X - 5).ToString() + (target.Y - 5).ToString();
-            simplePoint.Fill = targertsColor(target);
-            if (target.Missed)
+            if (target != null)
             {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = "Miss!";
-                textBlock.FontSize = 11;
-                textBlock.FontStyle = FontStyles.Italic;
-                textBlock.Foreground = new SolidColorBrush(Colors.Crimson);
-                Canvas.SetLeft(textBlock, target.X);
-                Canvas.SetTop(textBlock, target.Y);
-                root_Canvas.Children.Add(textBlock);
-            }
-            else
-            {
-                root_Canvas.Children.Add(simplePoint);
+                simplePoint = new Ellipse();
+                simplePoint.Width = 10;
+                simplePoint.Height = 10;
+                simplePoint.StrokeThickness = 5;
+                simplePoint.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                simplePoint.Tag = (target.X).ToString() + (target.Y).ToString();
+                simplePoint.Fill = targertsColor(target);
+                if (target.GetType() == typeof(Target))
+                {
+                    root_Canvas.Children.Add(simplePoint);
+                }
+                else
+                {
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Text = ";)";
+                    textBlock.FontSize = 9;
+                    textBlock.FontStyle = FontStyles.Italic;
+                    textBlock.Foreground = new SolidColorBrush(Colors.DeepSkyBlue);
+                    Canvas.SetLeft(textBlock, target.X-10);
+                    Canvas.SetTop(textBlock, target.Y+10);
+                    root_Canvas.Children.Add(textBlock);
+                    TargetList.Remove(target);
+                }
             }
         }
-
     }
 }
