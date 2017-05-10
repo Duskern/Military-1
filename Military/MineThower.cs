@@ -23,24 +23,29 @@ namespace Military
             Random = random;
         } 
 
-        public void Shoot(ref ObservableCollection<Target> Targets, int currentTime, int commonTime)
+        public void Shoot(ref ObservableCollection<Target> Targets, double currentTime, double commonTime)
         {
             while (currentTime < commonTime)
             {
                 Thread.Sleep(1000);
-                int x = Random.Next(60, 790);
-                int y = Random.Next(45, 577);
-                int damage = Random.Next(35, 45);
                 for (int i = 0; i < Targets.Count; i++)
                 {
+                    int x = Random.Next(60, 790);
+                    int y = Random.Next(45, 577);
+                    int damage = Random.Next(35, 45);
                     if (Object.ReferenceEquals(null, Targets[i]) || Targets[i] == null || Targets[i].Equals(null))
                     {
                         Targets.Remove(Targets[i]);
                         break;
                     }
-                    if (Targets[i].X >= x - 30 && Targets[i].X <= x + 30 &&
-                        Targets[i].Y >= y - 30 && Targets[i].Y <= y + 30 && Targets[i]!=null)
+                    //if (Targets[i].X >= x - 50 && Targets[i].X <= x + 50 &&
+                    //    Targets[i].Y >= y - 50 && Targets[i].Y <= y + 50 && Targets[i]!=null) 
+                    if ((x >= Targets[i].X + 50 || x <= Targets[i].X - 50) &&  
+                        (y >= Targets[i].Y + 50 || y <= Targets[i].Y - 50) && Targets[i] != null)
                     {
+                        x = Random.Next(60, 790);
+                        y = Random.Next(45, 577);
+                        damage = Random.Next(35, 45);
                         Targets[i].HealthPoints -= damage;
                         CountHit++;
                         TotalDamage += damage;
@@ -48,8 +53,12 @@ namespace Military
                     }
                     else
                     {
+                        x = Random.Next(60, 790);
+                        y = Random.Next(45, 577);
+                        damage = Random.Next(35, 45);
                         CountMiss++;
                         Targets.Add(new EmptyTarget(x, y));
+                        break;
                     }
                 }
             }

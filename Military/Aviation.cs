@@ -24,7 +24,7 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, int currentTime, int commonTime)
+        public void Shoot(ref ObservableCollection<Target> Targets, double currentTime,double commonTime)
         { 
             while (currentTime < commonTime)
             {
