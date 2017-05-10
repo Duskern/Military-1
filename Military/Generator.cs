@@ -16,39 +16,49 @@ namespace Military
         {
             TargetList = new ObservableCollection<Target>();
             int targetCount = random.Next(5, militaries);
-            int currentCount = 1;
-            TargetList = new ObservableCollection<Target>();
+            int currentCount = 0;
+            int less = 0;
             while (currentCount < targetCount)
             {
                 int x = random.Next(60, 790);
                 int y = random.Next(45, 577);
-                Target target = new Target(x, y);
-                if (TargetList.Count == 0)
+                int valueMiss = random.Next(1, 10);
+                if (valueMiss == 3|| valueMiss == 6 || valueMiss == 9)
                 {
-                    TargetList.Add(target);
-                }
-                bool checkUnique = true;
-                foreach (Target tempTarget in TargetList)
-                {
-                    if (target.X > tempTarget.X - 25 && target.X < tempTarget.X + 25 &&
-                        target.Y > tempTarget.Y - 25 && target.Y < tempTarget.Y + 25)
+                    Target target = new Target(x, y);
+                    if (TargetList.Count == 0)
                     {
-                        checkUnique = false;
+                        TargetList.Add(target);
+                    }
+                    bool checkUnique = true;
+                    foreach (Target tempTarget in TargetList)
+                    {
+                        if (target.X > tempTarget.X - 25 && target.X < tempTarget.X + 25 &&
+                            target.Y > tempTarget.Y - 25 && target.Y < tempTarget.Y + 25)
+                        {
+                            checkUnique = false;
+                        }
+                    }
+                    if (checkUnique)
+                    {
+                        TargetList.Add(target);
+                        currentCount++;
                     }
                 }
-                if (checkUnique)
+                else
                 {
-                    TargetList.Add(target);
-                    currentCount++;
-                }
+                    TargetList.Add(new EmptyTarget(x, y));
+                    less++;
+                } 
             }
-            return targetCount;
+            int count = TargetList.Count - less;
+            return count;
         }
 
         public int GenerateAviations(ref ObservableCollection<Aviation> AviationList, int militaries)
         {
             int currentCount = 0;
-            int avaiationCount = random.Next(1, militaries);
+            int avaiationCount = random.Next(1, militaries/2);
             AviationList = new ObservableCollection<Aviation>();
             do
             {
@@ -62,7 +72,7 @@ namespace Military
         public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList, int militaries)
         {
             int currentCount = 0;
-            int mineThowerCount = random.Next(1, militaries);
+            int mineThowerCount = random.Next(1, militaries/2);
             MineThowerList = new ObservableCollection<MineThower>();
             do
             {

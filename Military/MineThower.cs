@@ -27,39 +27,18 @@ namespace Military
         {
             while (currentTime < commonTime)
             {
-                Thread.Sleep(1000);
-                for (int i = 0; i < Targets.Count; i++)
+                Thread.Sleep(Random.Next(100,450));
+                int TargetIndex = Random.Next(Targets.Count);
+                int damage = Random.Next(35, 45); 
+                Targets[TargetIndex].HealthPoints -= damage;
+                if ((Targets[TargetIndex].GetType() == typeof(Target)))
                 {
-                    int x = Random.Next(60, 790);
-                    int y = Random.Next(45, 577);
-                    int damage = Random.Next(35, 45);
-                    if (Object.ReferenceEquals(null, Targets[i]) || Targets[i] == null || Targets[i].Equals(null))
-                    {
-                        Targets.Remove(Targets[i]);
-                        break;
-                    }
-                    //if (Targets[i].X >= x - 50 && Targets[i].X <= x + 50 &&
-                    //    Targets[i].Y >= y - 50 && Targets[i].Y <= y + 50 && Targets[i]!=null) 
-                    if ((x >= Targets[i].X + 50 || x <= Targets[i].X - 50) &&  
-                        (y >= Targets[i].Y + 50 || y <= Targets[i].Y - 50) && Targets[i] != null)
-                    {
-                        x = Random.Next(60, 790);
-                        y = Random.Next(45, 577);
-                        damage = Random.Next(35, 45);
-                        Targets[i].HealthPoints -= damage;
-                        CountHit++;
-                        TotalDamage += damage;
-                        break;
-                    }
-                    else
-                    {
-                        x = Random.Next(60, 790);
-                        y = Random.Next(45, 577);
-                        damage = Random.Next(35, 45);
-                        CountMiss++;
-                        Targets.Add(new EmptyTarget(x, y));
-                        break;
-                    }
+                    CountMiss++;
+                }
+                else
+                {
+                    //TotalDamage += damage;
+                    CountHit++;
                 }
             }
         }

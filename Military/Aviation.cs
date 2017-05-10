@@ -24,13 +24,13 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double currentTime,double commonTime)
+        public void Shoot(ref ObservableCollection<Target> Targets, double currentTime, double commonTime)
         { 
             while (currentTime < commonTime)
             {
-                Thread.Sleep(1500);
-                int TargetIndex = Random.Next(Targets.Count);
-                if (Targets[TargetIndex].HealthPoints > 25)
+                Thread.Sleep(Random.Next(150,500));
+                int TargetIndex = Random.Next(Targets.Count); 
+                if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     CountShell--;
                     if (CountShell > 0)

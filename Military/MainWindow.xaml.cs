@@ -21,7 +21,8 @@ namespace Military
 {
     public partial class MainWindow : Window
     {
-        int militaries = 20, time = 20, targetNumber = 0, timeEplaseed = 0;
+        int militaries = 20;
+        double timeEplaseed = 0, time = 20;
         Ellipse simplePoint = new Ellipse();
         Generator generator = new Generator();
         ObservableCollection<Target> TargetList = new ObservableCollection<Target>();
@@ -31,7 +32,6 @@ namespace Military
         ObservableCollection<Thread> Mine_ThrowersThreads = new ObservableCollection<Thread>();
         DispatcherTimer dispatcherTimerWork = new DispatcherTimer();
         DispatcherTimer dispatcherTimerGen = new DispatcherTimer();
-        Thread thread; 
 
         public MainWindow()
         {
@@ -60,14 +60,17 @@ namespace Military
                 AviationList.Clear();
                 MineThowerList.Clear();
                 int targetCount = generator.GenereteTargets(ref TargetList, militaries);
-                int avaiationCount = generator.GenerateAviations(ref AviationList, militaries);
-                int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList, militaries);
+                int avaiationCount = generator.GenerateAviations(ref AviationList, targetCount);
+                int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList, targetCount);
                 count_MineThowers.Content = "Count mine-thowers : " + Convert.ToInt32(mineThowerCount);
                 count_Aviations.Content = "Count aviations: " + Convert.ToInt32(avaiationCount);
                 count_Targets.Content = "Count targets : " + Convert.ToInt32(targetCount);
-                dispatcherTimerGen.Tick += new EventHandler(dispatcherTimerGen_Tick);
-                dispatcherTimerGen.Interval = TimeSpan.FromSeconds(0.5);
-                dispatcherTimerGen.Start();
+                foreach (var target in TargetList)
+                {
+                    initTarget(target);
+                }
+                button_Generate.IsEnabled = true; 
+                button_Start.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -78,6 +81,7 @@ namespace Military
 
         private void button_Start_Click(object sender, RoutedEventArgs e)
         {
+            button_Generate.IsEnabled = false;
             timeEplaseed = 0; 
             dispatcherTimerWork.Tick -= new EventHandler(dispatcherTimerWork_Tick);
             try
@@ -101,29 +105,32 @@ namespace Military
             {
                 AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, timeEplaseed, time)));
             }
-            
-            thread = new Thread(new ThreadStart(StartManeevers));
-            thread.Start();
+            StartMineThowers();
+            StartAviations();
             dispatcherTimerWork.Tick += new EventHandler(dispatcherTimerWork_Tick);
             dispatcherTimerWork.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimerWork.Start();
             button_Start.IsEnabled = false;
         }
 
-        public void StartManeevers()
+        public void StartMineThowers()
         {
-                //foreach (var item in AviationsThreads)
-                //{
-                //item.Start();
-                //Thread.Sleep(1000);
-                //}
-                foreach (var item in Mine_ThrowersThreads)
-                {
-                Thread.Sleep(1000);
+            foreach (var item in Mine_ThrowersThreads)
+            {
                 item.Start();
-                }
+                Thread.Sleep(100);
+            }
         }
-           
+
+        public void StartAviations()
+        {
+            foreach (var item in AviationsThreads)
+            {
+                item.Start();
+                Thread.Sleep(100);
+            }
+        } 
+
         private void dispatcherTimerWork_Tick(object sender, EventArgs e)
         {
             if (timeEplaseed == time)
@@ -135,12 +142,11 @@ namespace Military
             }
             else
             {
-
                 for (int i = 0; i < TargetList.Count; i++)
                 {
                     DrawTarget(TargetList[i]);
                 }
-                timeEplaseed++;
+                timeEplaseed = timeEplaseed + 1;
             }
         }
 
@@ -162,50 +168,52 @@ namespace Military
                 else
                 {
                     TextBlock textBlock = new TextBlock();
-                    textBlock.Text = ";)";
-                    textBlock.FontSize = 9;
+                    textBlock.Text = "Miss!";
+                    textBlock.FontSize = 8;
                     textBlock.FontStyle = FontStyles.Italic;
                     textBlock.Foreground = new SolidColorBrush(Colors.DeepSkyBlue);
-                    Canvas.SetLeft(textBlock, target.X-10);
-                    Canvas.SetTop(textBlock, target.Y+10);
+                    Canvas.SetLeft(textBlock, target.X - 10);
+                    Canvas.SetTop(textBlock, target.Y + 10);
                     root_Canvas.Children.Add(textBlock);
                     TargetList.Remove(target);
                 }
             }
         }
 
-        private void dispatcherTimerGen_Tick(object sender, EventArgs e)
+        private void initTarget(Target target)
         {
-            if (targetNumber == TargetList.Count)
+            if (target != null)
             {
-                targetNumber = 0;
-                MessageBox.Show("Press button 'Start military maneurus' ", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                button_Generate.IsEnabled = true;
-                button_Start.IsEnabled = true;
-                dispatcherTimerWork.Stop();
-                dispatcherTimerGen.Tick -= new EventHandler(dispatcherTimerGen_Tick);
-                return;
-            }
-            else
-            {
-                int k = TargetList.Count();
-                DrawTarget(TargetList[targetNumber]);
-                targetNumber++;
+                simplePoint = new Ellipse();
+                simplePoint.Width = 10;
+                simplePoint.Height = 10;
+                simplePoint.StrokeThickness = 5;
+                simplePoint.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                simplePoint.Tag = (target.X).ToString() + (target.Y).ToString();
+                simplePoint.Fill = generator.targertsColor(target);
+                if (target.GetType() == typeof(Target))
+                {
+                    root_Canvas.Children.Add(simplePoint);
+                }
             }
         }
+
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             ClearThreads();
         }
         private void ClearThreads()
         {
-            dispatcherTimerGen.Tick -= new EventHandler(dispatcherTimerGen_Tick);
             dispatcherTimerWork.Stop();
             dispatcherTimerWork.Tick -= new EventHandler(dispatcherTimerWork_Tick);
-            if (thread != null)
-            {
-                thread.Abort();
-            }
+            //if (threadTowers != null)
+            //{
+            //    threadTowers.Abort(); 
+            //}
+            //if (threadAviations != null)
+            //{
+            //    threadAviations.Abort();
+            //}
             foreach (var item in AviationsThreads)
             {
                 item.Abort();
