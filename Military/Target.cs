@@ -11,6 +11,8 @@ namespace Military
 {
     public class Target
     {
+        public Mutex mtx = new Mutex(); 
+
         protected int _healthPoints;     
         
         public int X { get; set; }  
@@ -25,7 +27,7 @@ namespace Military
             } 
             set
             {
-                Monitor.Enter(this);
+                mtx.WaitOne();
                 if (_healthPoints <= 0)
                 {
                     _healthPoints = 0;
@@ -34,7 +36,7 @@ namespace Military
                 { 
                     _healthPoints = value;
                 }
-                Monitor.Exit(this);
+                mtx.ReleaseMutex();
             }
         }
 

@@ -23,7 +23,7 @@ namespace Military
     {
         int militaries = 20;
         double timeEplaseed = 0, time = 20;
-        Ellipse simplePoint = new Ellipse();
+        Ellipse EmptyUI = new Ellipse();
         Generator generator = new Generator();
         ObservableCollection<Target> TargetList = new ObservableCollection<Target>();
         ObservableCollection<Aviation> AviationList = new ObservableCollection<Aviation>();
@@ -32,6 +32,9 @@ namespace Military
         ObservableCollection<Thread> Mine_ThrowersThreads = new ObservableCollection<Thread>();
         DispatcherTimer dispatcherTimerWork = new DispatcherTimer();
         DispatcherTimer dispatcherTimerGen = new DispatcherTimer();
+        public Polyline TargetUI = new Polyline();
+        public PointCollection pointsCollection = new PointCollection();
+        Random random = new Random();
 
         public MainWindow()
         {
@@ -42,26 +45,27 @@ namespace Military
         private void button_Generate_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
-                ClearThreads();
+            { 
                 if (MineThowerList != null && TargetList != null)
                 {
                     int k = MineThowerList.Count;
                     int tt = root_Canvas.Children.Count;
                     int z = TargetList.Count;
                 }
+                Mine_ThrowersThreads.Clear();
+                AviationsThreads.Clear();
+                Thread.Sleep(100);
                 root_Canvas.Children.Clear();
                 militaries = Convert.ToInt32(militaries_Count.Text);
                 if (militaries <= 0)
                 {
                     throw new Exception("Count of militaries can't be less or equal 0");
                 }
-                TargetList.Clear();
-                AviationList.Clear();
-                MineThowerList.Clear();
+                Thread.Sleep(200);
                 int targetCount = generator.GenereteTargets(ref TargetList, militaries);
-                int avaiationCount = generator.GenerateAviations(ref AviationList, targetCount);
-                int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList, targetCount);
+                Thread.Sleep(300);
+                int avaiationCount = generator.GenerateAviations(ref AviationList);
+                int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList);
                 count_MineThowers.Content = "Count mine-thowers : " + Convert.ToInt32(mineThowerCount);
                 count_Aviations.Content = "Count aviations: " + Convert.ToInt32(avaiationCount);
                 count_Targets.Content = "Count targets : " + Convert.ToInt32(targetCount);
@@ -82,7 +86,7 @@ namespace Military
         private void button_Start_Click(object sender, RoutedEventArgs e)
         {
             button_Generate.IsEnabled = false;
-            timeEplaseed = 0; 
+            timeEplaseed = 0;
             dispatcherTimerWork.Tick -= new EventHandler(dispatcherTimerWork_Tick);
             try
             {
@@ -96,22 +100,45 @@ namespace Military
             {
                 MessageBox.Show(argumentException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+            dispatcherTimerWork.Tick += new EventHandler(dispatcherTimerWork_Tick);
+            dispatcherTimerWork.Interval = TimeSpan.FromSeconds(1);
+            int countThreadsMine = Mine_ThrowersThreads.Count;
+            int countThreadsAviations = AviationsThreads.Count;
             foreach (var item in MineThowerList)
             {
-                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, timeEplaseed, time)));
+                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsMine)));
+                item.DrawingTarget += DrawEventTargets;
+            }
+            for (int i = 0; i < Mine_ThrowersThreads.Count; i++)
+            {
+                Mine_ThrowersThreads[i].Name = i.ToString();
             }
             foreach (var item in AviationList)
             {
-                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, timeEplaseed, time)));
+                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsAviations)));
+                item.DrawingAvia += DrawEventTargets;
+            }
+            for (int i = 0; i < AviationsThreads.Count; i++)
+            {
+                AviationsThreads[i].Name = i.ToString();
             }
             StartMineThowers();
             StartAviations();
-            dispatcherTimerWork.Tick += new EventHandler(dispatcherTimerWork_Tick);
-            dispatcherTimerWork.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimerWork.Start();
+            lock(this)
+            {
+                DrawEventTargets(this);
+            }
             button_Start.IsEnabled = false;
         }
+
+        private void DrawEventTargets(object sender)
+        {
+            for (int i = 0; i < TargetList.Count; i++)
+            {
+                DrawTarget(TargetList[i]);
+            }
+        } 
 
         public void StartMineThowers()
         {
@@ -125,7 +152,7 @@ namespace Military
         public void StartAviations()
         {
             foreach (var item in AviationsThreads)
-            {
+            { 
                 item.Start();
                 Thread.Sleep(100);
             }
@@ -133,98 +160,104 @@ namespace Military
 
         private void dispatcherTimerWork_Tick(object sender, EventArgs e)
         {
-            if (timeEplaseed == time)
+            if (timeEplaseed == time + 5)
             {
-                ClearThreads();
+                dispatcherTimerWork.Tick -= new EventHandler(dispatcherTimerWork_Tick);
+                dispatcherTimerWork.Stop();
+                MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 button_Generate.IsEnabled = true;
-                MessageBox.Show("Maneuvers done!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             else
             {
-                for (int i = 0; i < TargetList.Count; i++)
-                {
-                    DrawTarget(TargetList[i]);
-                }
                 timeEplaseed = timeEplaseed + 1;
             }
         }
+         
 
         public void DrawTarget(Target target)
         {
-            if (target != null)
+            Application.Current.Dispatcher.Invoke((Action)delegate  
             {
-                simplePoint = new Ellipse();
-                simplePoint.Width = 10;
-                simplePoint.Height = 10;
-                simplePoint.StrokeThickness = 5;
-                simplePoint.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-                simplePoint.Tag = (target.X).ToString() + (target.Y).ToString();
-                simplePoint.Fill = generator.targertsColor(target);
                 if (target.GetType() == typeof(Target))
                 {
-                    root_Canvas.Children.Add(simplePoint);
+                    pointsCollection = new PointCollection(); ;
+                    TargetUI = new Polyline();
+                    pointsCollection.Add(new Point(target.X, target.Y));
+                    pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
+                    pointsCollection.Add(new Point(target.X + 13, target.Y));
+                    pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
+                    pointsCollection.Add(new Point(target.X, target.Y + 8));
+                    TargetUI.Points = pointsCollection;
+                    TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
+                    TargetUI.Fill = generator.targertsColor(target);
+                    TargetUI.StrokeThickness = 1.5;
+                    int targetNumber = TargetList.IndexOf(target);
+                    TextBlock targetNumberUI = new TextBlock();
+                    targetNumberUI.Text = targetNumber.ToString();
+                    targetNumberUI.FontSize = 7;
+                    targetNumberUI.FontStyle = FontStyles.Italic;
+                    targetNumberUI.Foreground = new SolidColorBrush(Colors.MistyRose);
+                    targetNumberUI.FontWeight = FontWeights.Bold;
+                    Canvas.SetLeft(targetNumberUI, target.X);
+                    Canvas.SetTop(targetNumberUI, target.Y - 2);
+                    
+                    root_Canvas.Children.Add(TargetUI);root_Canvas.Children.Add(targetNumberUI);
+                    
                 }
                 else
                 {
-                    TextBlock textBlock = new TextBlock();
-                    textBlock.Text = "Miss!";
-                    textBlock.FontSize = 8;
-                    textBlock.FontStyle = FontStyles.Italic;
-                    textBlock.Foreground = new SolidColorBrush(Colors.DeepSkyBlue);
-                    Canvas.SetLeft(textBlock, target.X - 10);
-                    Canvas.SetTop(textBlock, target.Y + 10);
-                    root_Canvas.Children.Add(textBlock);
-                    TargetList.Remove(target);
+                    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                    EmptyUI = new Ellipse();
+                    EmptyUI.Width = 10;
+                    EmptyUI.Height = 10;
+                    EmptyUI.StrokeThickness = 5;
+                    EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                    EmptyUI.Fill = new SolidColorBrush(randomColor);
+                    root_Canvas.Children.Add(EmptyUI);
                 }
-            }
+            });
         }
 
         private void initTarget(Target target)
         {
-            if (target != null)
+            if (target.GetType() == typeof(Target))
             {
-                simplePoint = new Ellipse();
-                simplePoint.Width = 10;
-                simplePoint.Height = 10;
-                simplePoint.StrokeThickness = 5;
-                simplePoint.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-                simplePoint.Tag = (target.X).ToString() + (target.Y).ToString();
-                simplePoint.Fill = generator.targertsColor(target);
-                if (target.GetType() == typeof(Target))
-                {
-                    root_Canvas.Children.Add(simplePoint);
-                }
-            }
-        }
+                pointsCollection = new PointCollection(); ;
+                TargetUI = new Polyline();
+                pointsCollection.Add(new Point(target.X, target.Y));
+                pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
+                pointsCollection.Add(new Point(target.X + 13, target.Y));
+                pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
+                pointsCollection.Add(new Point(target.X, target.Y + 8));
+                TargetUI.Points = pointsCollection;
+                TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
+                TargetUI.Fill = generator.targertsColor(target);
+                TargetUI.StrokeThickness = 2;
 
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            ClearThreads();
-        }
-        private void ClearThreads()
-        {
-            dispatcherTimerWork.Stop();
-            dispatcherTimerWork.Tick -= new EventHandler(dispatcherTimerWork_Tick);
-            //if (threadTowers != null)
-            //{
-            //    threadTowers.Abort(); 
-            //}
-            //if (threadAviations != null)
-            //{
-            //    threadAviations.Abort();
-            //}
-            foreach (var item in AviationsThreads)
-            {
-                item.Abort();
+                int targetNumber = TargetList.IndexOf(target);
+                TextBlock targetNumberUI = new TextBlock();
+                targetNumberUI.Text = targetNumber.ToString();
+                targetNumberUI.FontSize = 7;
+                targetNumberUI.FontStyle = FontStyles.Italic;
+                targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
+                targetNumberUI.FontWeight = FontWeights.Bold;
+                Canvas.SetLeft(targetNumberUI, target.X);
+                Canvas.SetTop(targetNumberUI, target.Y - 2);
+               
+                root_Canvas.Children.Add(TargetUI); root_Canvas.Children.Add(targetNumberUI);
+               
             }
-            foreach (var item in Mine_ThrowersThreads)
+            else
             {
-                item.Abort();
+                EmptyUI = new Ellipse();
+                EmptyUI.Width = 10;
+                EmptyUI.Height = 10;
+                EmptyUI.StrokeThickness = 5;
+                EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
+                root_Canvas.Children.Add(EmptyUI);
             }
-            AviationsThreads.Clear();
-            Mine_ThrowersThreads.Clear();
-            button_Generate.IsEnabled = false;
         }
     }
 }

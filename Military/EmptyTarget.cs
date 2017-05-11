@@ -9,6 +9,8 @@ namespace Military
 {
     public class EmptyTarget : Target
     {
+        public Mutex mutex = new Mutex(); 
+
         public override int HealthPoints
         {
             get
@@ -18,7 +20,7 @@ namespace Military
 
             set
             {
-                Monitor.Enter(this);
+                mutex.WaitOne();
                 if (_healthPoints <= 0)
                 {
                     _healthPoints = 0;
@@ -27,7 +29,7 @@ namespace Military
                 {
                     _healthPoints = value;
                 }
-                Monitor.Exit(this);
+                mutex.ReleaseMutex();
             }
         }
 

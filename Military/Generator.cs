@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace Military
 {
     public class Generator
     {
-        Random random = new Random(); 
+        Random random = new Random();  
+        public int trueCount { get; set; }
 
         public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
         {
@@ -20,15 +22,16 @@ namespace Military
             int less = 0;
             while (currentCount < targetCount)
             {
-                int x = random.Next(60, 790);
-                int y = random.Next(45, 577);
+                int x = random.Next(30, 820);
+                int y = random.Next(35, 577);
                 int valueMiss = random.Next(1, 10);
-                if (valueMiss == 3|| valueMiss == 6 || valueMiss == 9)
+                if (valueMiss == 3|| valueMiss == 7 || valueMiss == 9)
                 {
                     Target target = new Target(x, y);
                     if (TargetList.Count == 0)
                     {
                         TargetList.Add(target);
+                        currentCount++;
                     }
                     bool checkUnique = true;
                     foreach (Target tempTarget in TargetList)
@@ -47,18 +50,35 @@ namespace Military
                 }
                 else
                 {
-                    TargetList.Add(new EmptyTarget(x, y));
-                    less++;
-                } 
+                    if (TargetList.Count == 0)
+                    {
+                        TargetList.Add(new EmptyTarget(x, y));
+                    }
+                    bool checkUniqueEmpty = true;
+                    foreach (Target tempTarget in TargetList)
+                    {
+                        if (x > tempTarget.X - 40 && x < tempTarget.X + 40 &&
+                            y > tempTarget.Y - 40 && y < tempTarget.Y + 40)
+                        {
+                            checkUniqueEmpty = false;
+                        }
+                    }
+                    if (checkUniqueEmpty)
+                    {
+                        TargetList.Add(new EmptyTarget(x, y));
+                        less++;
+                    }
+                }
             }
             int count = TargetList.Count - less;
+            trueCount = count;
             return count;
         }
 
-        public int GenerateAviations(ref ObservableCollection<Aviation> AviationList, int militaries)
+        public int GenerateAviations(ref ObservableCollection<Aviation> AviationList)
         {
             int currentCount = 0;
-            int avaiationCount = random.Next(1, militaries/2);
+            int avaiationCount = random.Next(1, trueCount/4);
             AviationList = new ObservableCollection<Aviation>();
             do
             {
@@ -66,13 +86,13 @@ namespace Military
                 currentCount++;
             }
             while (currentCount < avaiationCount);
-            return avaiationCount;
+            return AviationList.Count;
         }
 
-        public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList, int militaries)
+        public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList)
         {
             int currentCount = 0;
-            int mineThowerCount = random.Next(1, militaries/2);
+            int mineThowerCount = random.Next(1, trueCount/4);
             MineThowerList = new ObservableCollection<MineThower>();
             do
             {
@@ -80,14 +100,15 @@ namespace Military
                 currentCount++;
             }
             while (currentCount < mineThowerCount);
-            return mineThowerCount;
+            MineThowerList.Add(new MineThower(random));
+            return MineThowerList.Count;
         }
 
         public SolidColorBrush targertsColor(Target target)
         {
             if (target.HealthPoints == 100)
             {
-                return new SolidColorBrush(Colors.White);
+                return new SolidColorBrush(Colors.DeepSkyBlue);
             }
             else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
             {
@@ -99,7 +120,7 @@ namespace Military
             }
             else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
             {
-                return new SolidColorBrush(Colors.Coral);
+                return new SolidColorBrush(Colors.Magenta);
             }
             else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
             {

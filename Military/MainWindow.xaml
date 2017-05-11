@@ -9,7 +9,7 @@
         Width="1178.5"
         Height="765"
         ResizeMode="NoResize"
-        mc:Ignorable="d" Closing="Window_Closing">
+        mc:Ignorable="d">
     <Grid Background="Black">
         <StackPanel VerticalAlignment="Top">
             <Menu Width="Auto" Height="20">
@@ -96,7 +96,7 @@
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  FontSize="16"
-                 Text="20"
+                 Text="70"
                  TextWrapping="Wrap" />
         <Label Margin="31,66,0,0"
                HorizontalAlignment="Left"
@@ -124,7 +124,7 @@
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  FontSize="16"
-                 TextWrapping="Wrap" BorderBrush="White" SelectionBrush="White" Foreground="White" />
+                 TextWrapping="Wrap" BorderBrush="DeepSkyBlue" SelectionBrush="DeepSkyBlue" Background="DeepSkyBlue" Foreground="DeepSkyBlue" />
         <Button x:Name="button_Start"
                 Width="222"
                 Margin="32,557,0,0"
@@ -132,7 +132,7 @@
                 VerticalAlignment="Top"
                 Content="Start military maneurus"
                 RenderTransformOrigin="2.862,0.366" Click="button_Start_Click" />
-        <Label Margin="18,264,931,399"
+        <Label Margin="18,264,1109,398"
                Content="9"
                FontFamily="Wingdings"
                FontSize="25"
@@ -145,7 +145,7 @@
                Content="Targets state :"
                FontSize="16"
                FontStyle="Italic"
-               Foreground="#FF23E3EC"
+               Foreground="MistyRose"
                RenderTransformOrigin="-4.829,-1.288" />
         <Label Width="140"
                Margin="74,311,0,0"
@@ -154,7 +154,7 @@
                Content="Target 0% hp lost"
                FontSize="16"
                FontStyle="Italic"
-               Foreground="White"
+               Foreground="DeepSkyBlue"
                RenderTransformOrigin="-4.829,-1.288" />
         <TextBox IsReadOnly="True" 
             IsReadOnlyCaretVisible="True" 
@@ -200,15 +200,15 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            TextWrapping="Wrap" BorderBrush="Coral" Background="Coral" Foreground="Coral" SelectionBrush="Coral" />
-        <Label Width="140"
+            TextWrapping="Wrap" BorderBrush="Magenta" Background="Magenta" Foreground="Magenta" SelectionBrush="Magenta" />
+        <Label Width="178"
             Margin="74,419,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Target 50-85% hp lost"
             FontSize="16"
             FontStyle="Italic"
-            Foreground="Coral" 
+            Foreground="Magenta" 
             RenderTransformOrigin="-4.829,-1.288" />
         <TextBox IsReadOnly="True" 
             IsReadOnlyCaretVisible="True" 
@@ -246,7 +246,7 @@
             FontStyle="Italic"
             Foreground="Red" 
             RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="18,300,886,99"
+        <Border Margin="18,305,886,92"
             BorderBrush="Purple"
             BorderThickness="3"
             CornerRadius="25">
@@ -270,7 +270,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            Text="10"
+            Text="5"
             TextWrapping="Wrap" />
         <Label Margin="32,519,0,0"
             HorizontalAlignment="Left"
