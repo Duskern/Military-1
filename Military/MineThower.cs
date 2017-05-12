@@ -11,10 +11,12 @@ using System.Windows.Threading;
 namespace Military
 {
     public delegate void DeleGateDraw(object sender);
+    public delegate void ItemEnabled(object sender); 
 
     public class MineThower
     {
         public event DeleGateDraw DrawingTarget;
+        public event ItemEnabled Enabled;
         public int CountHit { get; set; }
         public int TotalDamage { get; set; }
         public int CountMiss{ get; set; }
@@ -28,24 +30,24 @@ namespace Military
             CountMiss = 0;
             TotalDamage = 0;
             Random = random;
-        } 
+        }
 
-        public void Shoot(ref ObservableCollection<Target> Targets,  double commonTime, int countThreadsMine)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, int countThreadsMine, bool message)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
             currentTime = 0;
-            while (currentTime < commonTime)
+            while (currentTime < commonTime - 2)
             {
-                Thread.Sleep(Random.Next(80,150));
+                Thread.Sleep(Random.Next(80, 150));
                 int TargetIndex = Random.Next(Targets.Count);
-                int damage = Random.Next(35, 45); 
+                int damage = Random.Next(35, 45);
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
-                { 
+                {
                     Targets[TargetIndex].HealthPoints -= damage;
                     CountHit++;
-                    TotalDamage += damage; 
+                    TotalDamage += damage;
                 }
                 else
                 {
@@ -54,20 +56,23 @@ namespace Military
                 }
                 DrawingTarget.Invoke(this);
             }
-            if (currentTime >= commonTime )
+            if (currentTime == commonTime-2)
             {
-                if (Thread.CurrentThread.Name.ToString() == (countThreadsMine).ToString())
-                {
-                    //// Can do something ;)
-                }
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
+                
+                if (Thread.CurrentThread.Name.ToString() == (countThreadsMine).ToString() && message)
+                {
+                    MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Enabled.Invoke(this);
+                }
                 return;
             }
         }
 
-        private void dispatcherTimerWork_Tick(object sender, EventArgs e)
-        {
+
+        private  void dispatcherTimerWork_Tick(object sender, EventArgs e)
+        { 
             currentTime++;
         }
     }
