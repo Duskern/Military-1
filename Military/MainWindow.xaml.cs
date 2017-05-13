@@ -24,6 +24,8 @@ namespace Military
         int militaries = 70;
         double time = 20;
         Ellipse EmptyUI = new Ellipse();
+        TextBlock nextOption;
+        TextBlock OptionText;
         Generator generator = new Generator();
         ObservableCollection<Target> TargetList = new ObservableCollection<Target>();
         ObservableCollection<Aviation> AviationList = new ObservableCollection<Aviation>();
@@ -39,40 +41,9 @@ namespace Military
         public MainWindow()
         {
             InitializeComponent();
-            pointsCollection = new PointCollection();
-            TargetUI = new Polyline();
-            int X = 13; int Y = 5;
-            pointsCollection.Add(new Point(X, Y));
-            pointsCollection.Add(new Point(X + 8, Y - 10));
-            pointsCollection.Add(new Point(X + 16, Y));
-            pointsCollection.Add(new Point(X + 16, Y + 10));
-            pointsCollection.Add(new Point(X, Y + 10));
-            TargetUI.Points = pointsCollection;
-            TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
-            TargetUI.Fill = new SolidColorBrush(Colors.DeepSkyBlue);
-            TargetUI.StrokeThickness = 1.5;
-            TextBlock OptionText = new TextBlock();
-            OptionText.FontSize = 16;
-            OptionText.FontStyle = FontStyles.Italic;
-            OptionText.Foreground = new SolidColorBrush(Colors.DeepSkyBlue);
-            Canvas.SetLeft(OptionText, X + 30);
-            Canvas.SetTop(OptionText, Y - 9);
-            OptionText.Text = "Targets";
+            inintPartMenu();
             OptionTarget.Children.Add(TargetUI);
             OptionTarget.Children.Add(OptionText);
-            EmptyUI = new Ellipse();
-            EmptyUI.Width = 18;
-            EmptyUI.Height = 18;
-            EmptyUI.StrokeThickness = 5;
-            EmptyUI.Margin = new Thickness(X, Y + 20, 1, 1);
-            EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
-            TextBlock nextOption = new TextBlock();
-            nextOption.Foreground = new SolidColorBrush(Colors.MintCream);
-            Canvas.SetLeft(nextOption, X + 30);
-            Canvas.SetTop(nextOption, Y + 20);
-            nextOption.FontSize = 16;
-            nextOption.FontStyle = FontStyles.Italic;
-            nextOption.Text = "Empties";
             OptionTarget.Children.Add(EmptyUI);
             OptionTarget.Children.Add(nextOption);
         }
@@ -142,7 +113,7 @@ namespace Military
             foreach (var item in MineThowerList)
             {
                 Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsMine, messageThower)));
-                item.DrawingTarget += DrawEventTargets;
+               item.DrawingTarget += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
             for (int i = 0; i < Mine_ThrowersThreads.Count; i++)
@@ -161,10 +132,6 @@ namespace Military
             }
             StartMineThowers();
             StartAviations();
-            lock(this)
-            {
-                DrawEventTargets(this);
-            }
             button_Start.IsEnabled = false;
         }
 
@@ -184,9 +151,12 @@ namespace Military
         {
             for (int i = 0; i < TargetList.Count; i++)
             {
-                DrawTarget(TargetList[i]);
+                lock (threadLock)
+                {                  
+                   DrawTarget(TargetList[i]);
+                }
             }
-        } 
+        }
 
         public void StartMineThowers()
         {
@@ -204,50 +174,50 @@ namespace Military
                 item.Start();
                 Thread.Sleep(50);
             }
-        }       
-
+        }
+        private object threadLock = new object();
+      
         public void DrawTarget(Target target)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate  
-            {
+                Application.Current.Dispatcher.Invoke((Action)delegate
+                {
                 if (target.GetType() == typeof(Target))
                 {
-                    pointsCollection = new PointCollection(); 
-                    TargetUI = new Polyline();
-                    pointsCollection.Add(new Point(target.X, target.Y));
-                    pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
-                    pointsCollection.Add(new Point(target.X + 13, target.Y));
-                    pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
-                    pointsCollection.Add(new Point(target.X, target.Y + 8));
-                    TargetUI.Points = pointsCollection;
-                    TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
-                    TargetUI.Fill = generator.targertsColor(target);
-                    TargetUI.StrokeThickness = 1.5;
-                    int targetNumber = TargetList.IndexOf(target);
-                    TextBlock targetNumberUI = new TextBlock();
-                    targetNumberUI.Text = targetNumber.ToString();
-                    targetNumberUI.FontSize = 7;
-                    targetNumberUI.FontStyle = FontStyles.Italic;
-                    targetNumberUI.Foreground = new SolidColorBrush(Colors.BlueViolet);
-                    targetNumberUI.FontWeight = FontWeights.Bold;
-                    Canvas.SetLeft(targetNumberUI, target.X);
-                    Canvas.SetTop(targetNumberUI, target.Y - 2);
-                    
-                    root_Canvas.Children.Add(TargetUI);root_Canvas.Children.Add(targetNumberUI);
-                    
-                }
-                else
-                {
-                    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                    EmptyUI = new Ellipse();
-                    EmptyUI.Width = 10;
-                    EmptyUI.Height = 10;
-                    EmptyUI.StrokeThickness = 5;
-                    EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-                    EmptyUI.Fill = new SolidColorBrush(randomColor);
-                    root_Canvas.Children.Add(EmptyUI);
-                }
-            });
+                        pointsCollection = new PointCollection();
+                        TargetUI = new Polyline();
+                        pointsCollection.Add(new Point(target.X, target.Y));
+                        pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
+                        pointsCollection.Add(new Point(target.X + 13, target.Y));
+                        pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
+                        pointsCollection.Add(new Point(target.X, target.Y + 8));
+                        TargetUI.Points = pointsCollection;
+                        TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
+                        TargetUI.Fill = generator.targertsColor(target);
+                        TargetUI.StrokeThickness = 1.5;
+                        int targetNumber = TargetList.IndexOf(target);
+                        TextBlock targetNumberUI = new TextBlock();
+                        targetNumberUI.Text = targetNumber.ToString();
+                        targetNumberUI.FontSize = 7;
+                        targetNumberUI.FontStyle = FontStyles.Italic;
+                        targetNumberUI.Foreground = new SolidColorBrush(Colors.BlueViolet);
+                        targetNumberUI.FontWeight = FontWeights.Bold;
+                        Canvas.SetLeft(targetNumberUI, target.X);
+                        Canvas.SetTop(targetNumberUI, target.Y - 2);
+                        root_Canvas.Children.Add(TargetUI);
+                        root_Canvas.Children.Add(targetNumberUI);
+                    }
+                    else
+                    {
+                        Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                        EmptyUI = new Ellipse();
+                        EmptyUI.Width = 10;
+                        EmptyUI.Height = 10;
+                        EmptyUI.StrokeThickness = 5;
+                        EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                        EmptyUI.Fill = generator.emptiesColor(target);
+                        root_Canvas.Children.Add(EmptyUI);
+                    }
+                });          
         }
 
         private void initTarget(Target target)
@@ -288,6 +258,42 @@ namespace Military
                 EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
                 root_Canvas.Children.Add(EmptyUI);
             }
+        }
+
+        private void inintPartMenu()
+        {
+            pointsCollection = new PointCollection();
+            TargetUI = new Polyline();
+            int X = 13; int Y = 5;
+            pointsCollection.Add(new Point(X, Y));
+            pointsCollection.Add(new Point(X + 8, Y - 10));
+            pointsCollection.Add(new Point(X + 16, Y));
+            pointsCollection.Add(new Point(X + 16, Y + 10));
+            pointsCollection.Add(new Point(X, Y + 10));
+            TargetUI.Points = pointsCollection;
+            TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
+            TargetUI.Fill = new SolidColorBrush(Colors.DeepSkyBlue);
+            TargetUI.StrokeThickness = 1.5;
+            OptionText = new TextBlock();
+            OptionText.FontSize = 16;
+            OptionText.FontStyle = FontStyles.Italic;
+            OptionText.Foreground = new SolidColorBrush(Colors.DeepSkyBlue);
+            Canvas.SetLeft(OptionText, X + 30);
+            Canvas.SetTop(OptionText, Y - 9);
+            OptionText.Text = "Targets";
+            EmptyUI = new Ellipse();
+            EmptyUI.Width = 18;
+            EmptyUI.Height = 18;
+            EmptyUI.StrokeThickness = 5;
+            EmptyUI.Margin = new Thickness(X, Y + 20, 1, 1);
+            EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
+            nextOption = new TextBlock();
+            nextOption.Foreground = new SolidColorBrush(Colors.MintCream);
+            Canvas.SetLeft(nextOption, X + 30);
+            Canvas.SetTop(nextOption, Y + 20);
+            nextOption.FontSize = 16;
+            nextOption.FontStyle = FontStyles.Italic;
+            nextOption.Text = "Empties";
         }
     }
 }

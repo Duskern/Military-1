@@ -11,24 +11,26 @@ using System.Windows.Threading;
 namespace Military
 {
     public delegate void DeleGateDraw(object sender);
-    public delegate void ItemEnabled(object sender); 
+    public delegate void ItemEnabled(object sender);
+    public delegate void DeleGateDrawEmpty(object sender); 
 
     public class MineThower
     {
         public event DeleGateDraw DrawingTarget;
+        public event DeleGateDrawEmpty DrawingEmpty;
         public event ItemEnabled Enabled;
+        public string Name { get; set; }
         public int CountHit { get; set; }
         public int TotalDamage { get; set; }
-        public int CountMiss{ get; set; }
         public Random Random { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
         int currentTime = 0;
 
-        public MineThower(Random random)
+        public MineThower(Random random, int сode)
         {
+            Name = "Mine-thrower #" + сode.ToString();
             CountHit = 0;
-            CountMiss = 0;
-            TotalDamage = 0;
+            TotalDamage = 0; 
             Random = random;
         }
 
@@ -46,21 +48,21 @@ namespace Military
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     Targets[TargetIndex].HealthPoints -= damage;
+                    DrawingTarget.Invoke(this);
                     CountHit++;
-                    TotalDamage += damage;
                 }
                 else
                 {
-                    CountMiss++;
                     Targets[TargetIndex].HealthPoints -= damage;
+                    CountHit++;
                 }
-                DrawingTarget.Invoke(this);
+                TotalDamage += damage; 
+               
             }
             if (currentTime == commonTime-2)
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                
                 if (Thread.CurrentThread.Name.ToString() == (countThreadsMine).ToString() && message)
                 {
                     MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);

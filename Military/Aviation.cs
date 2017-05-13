@@ -15,6 +15,8 @@ namespace Military
         public event DeleGateDraw DrawingAvia;
         public event ItemEnabled Enabled;
         private const int damage_degree = 50;
+        public string Name { get; set; }
+        public int CountDestroyed { get; set; } 
         public int CountShell { get; set; } 
         public int CountHit { get; set; } 
         public int TotalDamage { get; set; }
@@ -22,11 +24,13 @@ namespace Military
         int currentTime = 0;
         DispatcherTimer timer = new DispatcherTimer();
 
-        public Aviation( Random random)
+        public Aviation(Random random, int сode)
         {
-            CountShell = 20;
+            Name = "Aircraft #" + сode.ToString();
+            CountShell = 10;
             CountHit = 0;
-            TotalDamage = 0; 
+            TotalDamage = 0;
+            CountDestroyed = 0;
             Random = random;
         }
 
@@ -38,13 +42,17 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
-                Thread.Sleep(Random.Next(100, 200));
                 int TargetIndex = Random.Next(Targets.Count);
                 if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     CountShell--;
                     if (CountShell > 0)
                     {
+                        if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
+                        {
+                            CountDestroyed++;
+                        }
+                        Thread.Sleep(Random.Next(85, 160));
                         Targets[TargetIndex].HealthPoints -= damage_degree;
                         DrawingAvia.Invoke(this);
                         CountHit++;

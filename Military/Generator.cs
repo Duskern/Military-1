@@ -6,12 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Shapes;
 
 namespace Military
 {
     public class Generator
     {
-        Random random = new Random();  
+        Random random = new Random();
+
+        public Polyline TargetUI;
+        public PointCollection pointsCollection;
+
         public int trueCount { get; set; }
 
         public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
@@ -24,10 +29,11 @@ namespace Military
             {
                 int x = random.Next(30, 820);
                 int y = random.Next(35, 577);
-                int valueMiss = random.Next(1, 10);
-                if (valueMiss == 3|| valueMiss == 7 || valueMiss == 9)
+                int valueMiss = random.Next(1, 12);
+                if (valueMiss == 3 || valueMiss == 7 || valueMiss == 9 || valueMiss == 5)
                 {
-                    Target target = new Target(x, y);
+                    int code = random.Next(101, 998);
+                    Target target = new Target(x, y, code);
                     if (TargetList.Count == 0)
                     {
                         TargetList.Add(target);
@@ -79,10 +85,11 @@ namespace Military
         {
             int currentCount = 0;
             int avaiationCount = random.Next(1, trueCount/4);
+            int code = random.Next(10001, 99998);
             AviationList = new ObservableCollection<Aviation>();
             do
             {
-                AviationList.Add(new Aviation(random));
+                AviationList.Add(new Aviation(random, code));
                 currentCount++;
             }
             while (currentCount < avaiationCount);
@@ -93,14 +100,14 @@ namespace Military
         {
             int currentCount = 0;
             int mineThowerCount = random.Next(1, trueCount/4);
+            int code = random.Next(10001, 99998);
             MineThowerList = new ObservableCollection<MineThower>();
             do
             {
-                MineThowerList.Add(new MineThower(random));
+                MineThowerList.Add(new MineThower(random, code));
                 currentCount++;
             }
             while (currentCount < mineThowerCount);
-            MineThowerList.Add(new MineThower(random));
             return MineThowerList.Count;
         }
 
@@ -130,7 +137,36 @@ namespace Military
             {
                 return new SolidColorBrush(Colors.Red);
             }
-        } 
+        }
+
+        public SolidColorBrush emptiesColor(Target target)
+        {
+            if (target.HealthPoints == 100)
+            {
+                return new SolidColorBrush(Colors.MintCream);
+            }
+            else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
+            {
+                return new SolidColorBrush(Colors.Lime);
+            }
+            else if (target.HealthPoints < 55 && target.HealthPoints == 50)
+            {
+                return new SolidColorBrush(Colors.Yellow);
+            }
+            else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
+            {
+                return new SolidColorBrush(Colors.Magenta);
+            }
+            else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
+            {
+                return new SolidColorBrush(Colors.OrangeRed);
+            }
+            else
+            {
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                return new SolidColorBrush(randomColor);
+            }
+        }
 
     }
 }

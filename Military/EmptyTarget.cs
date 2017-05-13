@@ -33,9 +33,9 @@ namespace Military
             }
         }
 
-        public EmptyTarget(int x, int y) : base(x, y)
+        public EmptyTarget(int x, int y) : base(x, y, 0)
         {
-            _healthPoints = 0;
+            _healthPoints = 100;
             X = x;
             Y = y;
         }

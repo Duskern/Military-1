@@ -106,7 +106,6 @@
     <Compile Include="EmptyTarget.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="MineThower.cs" />
-    <Compile Include="SmartDispatcherTimer.cs" />
     <Compile Include="Target.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

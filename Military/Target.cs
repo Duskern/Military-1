@@ -11,13 +11,15 @@ namespace Military
 {
     public class Target
     {
-        public Mutex mtx = new Mutex(); 
+        private object threadLock = new object();
+
+        public string Name { get; set; } 
 
         protected int _healthPoints;     
         
         public int X { get; set; }  
 
-        public int Y { get; set; }   
+        public int Y { get; set; }    
 
         public virtual int HealthPoints
         {
@@ -27,21 +29,23 @@ namespace Military
             } 
             set
             {
-                mtx.WaitOne();
-                if (_healthPoints <= 0)
+                lock (threadLock)
                 {
-                    _healthPoints = 0;
-                }
-                else
-                { 
-                    _healthPoints = value;
-                }
-                mtx.ReleaseMutex();
+                    if (_healthPoints <= 0)
+                    {
+                        _healthPoints = 0;
+                    }
+                    else
+                    {
+                        _healthPoints = value;
+                    }
+                }               
             }
         }
 
-        public Target(int x , int y)
+        public Target(int x , int y, int code)
         {
+            Name = "#" + code.ToString();
             _healthPoints = 100;
             X = x;
             Y = y;
