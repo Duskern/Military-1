@@ -13,7 +13,7 @@ namespace Military
     {
         private object threadLock = new object();
 
-        public string Name { get; set; } 
+        public int Name { get; set; } 
 
         protected int _healthPoints;     
         
@@ -31,21 +31,14 @@ namespace Military
             {
                 lock (threadLock)
                 {
-                    if (_healthPoints <= 0)
-                    {
-                        _healthPoints = 0;
-                    }
-                    else
-                    {
-                        _healthPoints = value;
-                    }
+                    _healthPoints = value;
                 }               
             }
         }
 
         public Target(int x , int y, int code)
         {
-            Name = "#" + code.ToString();
+            Name = code;
             _healthPoints = 100;
             X = x;
             Y = y;

@@ -17,7 +17,6 @@ namespace Military
     public class MineThower
     {
         public event DeleGateDraw DrawingTarget;
-        public event DeleGateDrawEmpty DrawingEmpty;
         public event ItemEnabled Enabled;
         public string Name { get; set; }
         public int CountHit { get; set; }
@@ -42,7 +41,7 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
-                Thread.Sleep(Random.Next(80, 150));
+                Thread.Sleep(Random.Next(85, 160));
                 int TargetIndex = Random.Next(Targets.Count);
                 int damage = Random.Next(35, 45);
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
@@ -57,23 +56,20 @@ namespace Military
                     CountHit++;
                 }
                 TotalDamage += damage; 
-               
             }
             if (currentTime == commonTime-2)
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                if (Thread.CurrentThread.Name.ToString() == (countThreadsMine).ToString() && message)
-                {
-                    MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (message)
+                { 
                     Enabled.Invoke(this);
                 }
                 return;
             }
         }
 
-
-        private  void dispatcherTimerWork_Tick(object sender, EventArgs e)
+        private void dispatcherTimerWork_Tick(object sender, EventArgs e)
         { 
             currentTime++;
         }

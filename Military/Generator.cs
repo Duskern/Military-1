@@ -25,6 +25,7 @@ namespace Military
             int targetCount = random.Next(5, militaries);
             int currentCount = 0;
             int less = 0;
+            int code = 1;
             while (currentCount < targetCount)
             {
                 int x = random.Next(30, 820);
@@ -32,12 +33,12 @@ namespace Military
                 int valueMiss = random.Next(1, 12);
                 if (valueMiss == 3 || valueMiss == 7 || valueMiss == 9 || valueMiss == 5)
                 {
-                    int code = random.Next(101, 998);
                     Target target = new Target(x, y, code);
                     if (TargetList.Count == 0)
                     {
                         TargetList.Add(target);
                         currentCount++;
+                        code++;
                     }
                     bool checkUnique = true;
                     foreach (Target tempTarget in TargetList)
@@ -52,13 +53,14 @@ namespace Military
                     {
                         TargetList.Add(target);
                         currentCount++;
+                        code++;
                     }
                 }
                 else
                 {
                     if (TargetList.Count == 0)
                     {
-                        TargetList.Add(new EmptyTarget(x, y));
+                        TargetList.Add(new EmptyTarget(x, y, 0));
                     }
                     bool checkUniqueEmpty = true;
                     foreach (Target tempTarget in TargetList)
@@ -71,7 +73,7 @@ namespace Military
                     }
                     if (checkUniqueEmpty)
                     {
-                        TargetList.Add(new EmptyTarget(x, y));
+                        TargetList.Add(new EmptyTarget(x, y, 0));
                         less++;
                     }
                 }
@@ -163,7 +165,7 @@ namespace Military
             }
             else
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
                 return new SolidColorBrush(randomColor);
             }
         }

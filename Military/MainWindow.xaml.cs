@@ -22,7 +22,7 @@ namespace Military
     public partial class MainWindow : Window
     {
         int militaries = 70;
-        double time = 20;
+        double time = 10;
         Ellipse EmptyUI = new Ellipse();
         TextBlock nextOption;
         TextBlock OptionText;
@@ -35,8 +35,10 @@ namespace Military
         DispatcherTimer dispatcherTimerWork = new DispatcherTimer();
         DispatcherTimer dispatcherTimerGen = new DispatcherTimer();
         public Polyline TargetUI = new Polyline();
+        private object threadLock = new object();
         public PointCollection pointsCollection = new PointCollection();
-        Random random = new Random();
+        public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>(); 
+        Random random = new Random(); bool mess = true;
 
         public MainWindow()
         {
@@ -52,12 +54,6 @@ namespace Military
         {
             try
             { 
-                if (MineThowerList != null && TargetList != null)
-                {
-                    int k = MineThowerList.Count;
-                    int tt = root_Canvas.Children.Count;
-                    int z = TargetList.Count;
-                }
                 Mine_ThrowersThreads.Clear();
                 AviationsThreads.Clear();
                 Thread.Sleep(100);
@@ -79,6 +75,9 @@ namespace Military
                 {
                     initTarget(target);
                 }
+                button_TargetStats.IsEnabled = false;
+                button_MineThowerStats.IsEnabled = false;
+                button_AviationStats.IsEnabled = false;
                 button_Generate.IsEnabled = true; 
                 button_Start.IsEnabled = true;
             }
@@ -91,6 +90,7 @@ namespace Military
 
         private void button_Start_Click(object sender, RoutedEventArgs e)
         {
+            mess = true;
             button_Generate.IsEnabled = false;
             try
             {
@@ -104,16 +104,23 @@ namespace Military
             {
                 MessageBox.Show(argumentException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            int countThreadsMine = Mine_ThrowersThreads.Count;
-            int countThreadsAviations = AviationsThreads.Count;
-            bool messageAvia, messageThower;
-            messageThower = (countThreadsMine > countThreadsAviations) ? true : false;
-            messageAvia = (countThreadsMine < countThreadsAviations) ? true : false;
-            messageAvia = (countThreadsMine == countThreadsAviations) ? true : false;
+            int countThreadsMine = MineThowerList.Count;
+            int countThreadsAviations = AviationList.Count;
+            bool messageAvia = false;
+            bool messageThower = false;
+            if (countThreadsMine == countThreadsAviations)
+            {
+                messageAvia = true;
+            }
+            else
+            {
+                messageThower = (countThreadsMine > countThreadsAviations) ? true : false;
+                messageAvia = (countThreadsMine < countThreadsAviations) ? true : false;
+            }
             foreach (var item in MineThowerList)
             {
                 Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsMine, messageThower)));
-               item.DrawingTarget += DrawEventTargets;
+                item.DrawingTarget += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
             for (int i = 0; i < Mine_ThrowersThreads.Count; i++)
@@ -134,18 +141,6 @@ namespace Military
             StartAviations();
             button_Start.IsEnabled = false;
         }
-
-        private void Item_Enabled(object sender)
-        {
-            Application.Current.Dispatcher.Invoke((Action)delegate
-            {
-                button_Generate.IsEnabled = true; 
-                button_TargetStats.IsEnabled = true; 
-                button_MineThowerStats.IsEnabled = true; 
-                button_AviationStats.IsEnabled = true;
-            });
-        }
-
 
         private void DrawEventTargets(object sender)
         {
@@ -175,11 +170,15 @@ namespace Military
                 Thread.Sleep(50);
             }
         }
-        private object threadLock = new object();
-      
+
         public void DrawTarget(Target target)
         {
-                Application.Current.Dispatcher.Invoke((Action)delegate
+            try
+            {
+
+            }
+            catch (Exception){}
+                Dispatcher.Invoke((Action)delegate
                 {
                 if (target.GetType() == typeof(Target))
                 {
@@ -192,14 +191,14 @@ namespace Military
                         pointsCollection.Add(new Point(target.X, target.Y + 8));
                         TargetUI.Points = pointsCollection;
                         TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
-                        TargetUI.Fill = generator.targertsColor(target);
+                        TargetUI.Fill = generator.targertsColor(target); 
                         TargetUI.StrokeThickness = 1.5;
                         int targetNumber = TargetList.IndexOf(target);
                         TextBlock targetNumberUI = new TextBlock();
-                        targetNumberUI.Text = targetNumber.ToString();
+                        targetNumberUI.Text = target.Name.ToString();
                         targetNumberUI.FontSize = 7;
                         targetNumberUI.FontStyle = FontStyles.Italic;
-                        targetNumberUI.Foreground = new SolidColorBrush(Colors.BlueViolet);
+                        targetNumberUI.Foreground = new SolidColorBrush(Colors.DarkOrchid);
                         targetNumberUI.FontWeight = FontWeights.Bold;
                         Canvas.SetLeft(targetNumberUI, target.X);
                         Canvas.SetTop(targetNumberUI, target.Y - 2);
@@ -235,10 +234,9 @@ namespace Military
                 TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
                 TargetUI.Fill = generator.targertsColor(target);
                 TargetUI.StrokeThickness = 2;
-
                 int targetNumber = TargetList.IndexOf(target);
                 TextBlock targetNumberUI = new TextBlock();
-                targetNumberUI.Text = targetNumber.ToString();
+                targetNumberUI.Text = target.Name.ToString();
                 targetNumberUI.FontSize = 7;
                 targetNumberUI.FontStyle = FontStyles.Italic;
                 targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
@@ -294,6 +292,53 @@ namespace Military
             nextOption.FontSize = 16;
             nextOption.FontStyle = FontStyles.Italic;
             nextOption.Text = "Empties";
+        }
+
+        private void button_TargetStats_Click(object sender, RoutedEventArgs e)
+        {
+            targetsStats = new List<KeyValuePair<int, int>>(); 
+            List<Target> targets =  TargetList.ToList();
+
+            for (int  i = 0;  i < targets.Count;  i++)
+            {
+                if (targets[i].HealthPoints < 0)
+                {
+                    targets[i].HealthPoints = 0;
+                }
+            }
+            targets.OrderBy(x => x.Name).ToList();
+            foreach (var target in targets)
+            {
+                if (target.GetType() == typeof(Target))
+                {
+                    targetsStats.Add(new KeyValuePair<int, int>(target.Name, target.HealthPoints));
+                }
+            }
+            TargetStats targetChar = new TargetStats();
+            targetChar.ShowDialog();
+        }
+
+        private void Item_Enabled(object sender)
+        {
+            lock (threadLock)
+            {
+                Dispatcher.Invoke((Action)delegate
+                {
+                    if (mess)
+                    {
+                        MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        button_Generate.IsEnabled = true;
+                        button_TargetStats.IsEnabled = true;
+                        button_MineThowerStats.IsEnabled = true;
+                        button_AviationStats.IsEnabled = true;
+                        mess = false;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                });
+            }
         }
     }
 }

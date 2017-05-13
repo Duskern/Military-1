@@ -64,9 +64,8 @@ namespace Military
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                if (Thread.CurrentThread.Name.ToString() == (countThreadsAviations).ToString() && message)
+                if (message)
                 {   
-                    MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     Enabled.Invoke(this);
                 }
                 return;

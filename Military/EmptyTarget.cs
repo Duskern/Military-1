@@ -9,7 +9,7 @@ namespace Military
 {
     public class EmptyTarget : Target
     {
-        public Mutex mutex = new Mutex(); 
+        private object threadLock = new object();
 
         public override int HealthPoints
         {
@@ -17,27 +17,28 @@ namespace Military
             {
                 return _healthPoints;
             }
-
             set
             {
-                mutex.WaitOne();
-                if (_healthPoints <= 0)
+                lock (threadLock)
                 {
-                    _healthPoints = 0;
+                    if ((_healthPoints - value) <= 0)
+                    {
+                        _healthPoints = 0;
+                    }
+                    else
+                    {
+                        _healthPoints = value;
+                    }
                 }
-                else
-                {
-                    _healthPoints = value;
-                }
-                mutex.ReleaseMutex();
             }
         }
 
-        public EmptyTarget(int x, int y) : base(x, y, 0)
+        public EmptyTarget(int x, int y, int code) : base(x, y, code)
         {
             _healthPoints = 100;
             X = x;
             Y = y;
+            Name = code;
         }
     }
 }
