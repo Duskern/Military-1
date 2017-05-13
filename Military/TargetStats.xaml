@@ -11,7 +11,7 @@
         Title="Target statistic" Height="759.999" Width="1274.286" 
         Background="Black" Loaded="Window_Loaded">
     <Grid>
-        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Targets statistic" LegendTitle="Statistic value" Foreground="Coral" FontSize="15" Background="Black" Name="mChart"  Height="687" Width="1225">
+        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Targets statistic" LegendTitle="Statistic value" Foreground="Blue" FontSize="15" Background="Black" Name="mChart"  Height="687" Width="1225">
             <chartingToolkit:AreaSeries DependentValuePath="Value"  Title="Health" IndependentValuePath="Key" ItemsSource="{Binding}"> 
                 <chartingToolkit:AreaSeries.DataPointStyle>
                     <Style TargetType="chartingToolkit:AreaDataPoint">
@@ -21,7 +21,7 @@
             </chartingToolkit:AreaSeries>
             <chartingToolkit:Chart.Axes>
                 <chartingToolkit:LinearAxis Orientation="Y" Location="Left" Title="Target health" Minimum="0" Maximum="100"/>
-                <chartingToolkit:LinearAxis Orientation="X" Location="Bottom" Title="Target number"/>
+                <chartingToolkit:LinearAxis Orientation="X" Location="Bottom" Title="Target number" Minimum="0"/>
             </chartingToolkit:Chart.Axes>
            
         </chartingToolkit:Chart>

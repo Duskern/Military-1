@@ -8,41 +8,37 @@
        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
         Icon="C:\Users\Yulian\Desktop\Military\Military\Officer.png" 
         ResizeMode="NoResize"
-        Title="Aviation statistic" Height="759.999" Width="1274.286" 
+        Title="Aviation statistic" Height="759.999" Width="1280" 
         Background="Black" Loaded="Window_Loaded">
     <Grid>
-        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Aviation statistic" LegendTitle="Statistic values" Foreground="DeepSkyBlue" FontSize="15" Background="Black" Name="mChart"  Height="687" Width="1225"   
-        >
-            <chartingToolkit:ColumnSeries DependentValuePath="Value"  Title="Count hit" IndependentValuePath="Key" ItemsSource="{Binding [0]}" BorderBrush="Orange" 
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"  HorizontalContentAlignment="Stretch" >
-                <chartingToolkit:ColumnSeries.DataPointStyle>
-                    <Style TargetType="chartingToolkit:ColumnDataPoint">
+        <chartingToolkit:Chart HorizontalAlignment="Left" VerticalAlignment="Top"  Title="Aviation statistic" LegendTitle=" Statistic values" Foreground="DeepSkyBlue" FontSize="15" Background="Black" Name="mChart"  Height="731" Width="1274">
+            <chartingToolkit:LineSeries DependentValuePath="Value" Title="Count hit" IndependentValuePath="Key" ItemsSource="{Binding [0]}">
+                <chartingToolkit:LineSeries.DataPointStyle>
+                    <Style TargetType="chartingToolkit:LineDataPoint">
                         <Setter Property="Background" Value="Orange"/>
                     </Style>
-                </chartingToolkit:ColumnSeries.DataPointStyle>
-            </chartingToolkit:ColumnSeries>
+                </chartingToolkit:LineSeries.DataPointStyle>
+            </chartingToolkit:LineSeries>
 
-            <chartingToolkit:ColumnSeries DependentValuePath="Value"  Title="Count shell" IndependentValuePath="Key" ItemsSource="{Binding [1]}" BorderBrush="DarkViolet"   
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"  HorizontalContentAlignment="Stretch">
-                <chartingToolkit:ColumnSeries.DataPointStyle>
-                    <Style TargetType="chartingToolkit:ColumnDataPoint">
+            <chartingToolkit:LineSeries DependentValuePath="Value" Title="Count shell" IndependentValuePath="Key" ItemsSource="{Binding [1]}" >
+                <chartingToolkit:DataPointSeries.DataPointStyle>
+                    <Style TargetType="chartingToolkit:LineDataPoint">
                         <Setter Property="Background" Value="DarkViolet"/>
                     </Style>
-                </chartingToolkit:ColumnSeries.DataPointStyle>
-            </chartingToolkit:ColumnSeries>
+                </chartingToolkit:DataPointSeries.DataPointStyle>
+            </chartingToolkit:LineSeries>
 
-            <chartingToolkit:ColumnSeries DependentValuePath="Value" BorderBrush="Crimson" Title="Count destroyed" IndependentValuePath="Key" ItemsSource="{Binding [2]}" 
-                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"  HorizontalContentAlignment="Stretch">
-                <chartingToolkit:ColumnSeries.DataPointStyle>
-                    <Style TargetType="chartingToolkit:ColumnDataPoint">
+            <chartingToolkit:LineSeries DependentValuePath="Value" Title="Count destroyed" IndependentValuePath="Key" ItemsSource="{Binding [2]}" >
+                <chartingToolkit:LineSeries.DataPointStyle>
+                    <Style TargetType="chartingToolkit:LineDataPoint">
                         <Setter Property="Background" Value="Crimson"/>
                     </Style>
-                </chartingToolkit:ColumnSeries.DataPointStyle>
-            </chartingToolkit:ColumnSeries>  
-            
+                </chartingToolkit:LineSeries.DataPointStyle>
+            </chartingToolkit:LineSeries>
+
             <chartingToolkit:Chart.Axes>
-                <chartingToolkit:LinearAxis Orientation="Y" Location="Left" Title="Statistic values" Minimum="1" Maximum="20"/>
-                <chartingToolkit:LinearAxis Orientation="X" Location="Bottom" Title="Aircraft name" Minimum="0.5"/>
+                <chartingToolkit:LinearAxis Orientation="Y" Location="Left" Title="Statistic values" Minimum="0" Maximum="20"/>
+                <chartingToolkit:LinearAxis Orientation="X" Location="Bottom" Title="Aircraft name" Minimum="0"/>
             </chartingToolkit:Chart.Axes>
 
         </chartingToolkit:Chart>

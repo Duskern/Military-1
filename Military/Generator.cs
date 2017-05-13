@@ -22,7 +22,7 @@ namespace Military
         public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
         {
             TargetList = new ObservableCollection<Target>();
-            int targetCount = random.Next(5, militaries);
+            int targetCount = random.Next(10, militaries);
             int currentCount = 0;
             int less = 0;
             int code = 1;
@@ -86,7 +86,7 @@ namespace Military
         public int GenerateAviations(ref ObservableCollection<Aviation> AviationList)
         {
             int currentCount = 0;
-            int avaiationCount = random.Next(1, trueCount/4);
+            int avaiationCount = random.Next(2, trueCount/4);
             int code = 1;
             AviationList = new ObservableCollection<Aviation>();
             do
@@ -102,7 +102,7 @@ namespace Military
         public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList)
         {
             int currentCount = 0;
-            int mineThowerCount = random.Next(1, trueCount/4);
+            int mineThowerCount = random.Next(2, trueCount/4);
             int code = 1;
             MineThowerList = new ObservableCollection<MineThower>();
             do

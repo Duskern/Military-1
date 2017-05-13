@@ -1,0 +1,30 @@
+﻿<Window x:Class="Military.MineThowerStats"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Military"
+        mc:Ignorable="d"
+        Title="MineThowerStats"
+    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
+        Icon="C:\Users\Yulian\Desktop\Military\Military\Officer.png" 
+        ResizeMode="NoResize"
+        Height="759.999" Width="1274.286" 
+        Background="Black" Loaded="Window_Loaded">
+    <Grid>
+        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Mine-thower statistic" LegendTitle="Statistic value" Foreground="Coral" FontSize="15" Background="Black" Name="mChart"  Height="687" Width="1225">
+            <chartingToolkit:ColumnSeries DependentValuePath="Value"  Title="Count hit" IndependentValuePath="Key" ItemsSource="{Binding}">
+                <chartingToolkit:ColumnSeries.DataPointStyle>
+                    <Style TargetType="chartingToolkit:ColumnDataPoint">
+                        <Setter Property="Background" Value="Blue"/>
+                    </Style>
+                </chartingToolkit:ColumnSeries.DataPointStyle>
+            </chartingToolkit:ColumnSeries>
+            <chartingToolkit:Chart.Axes>
+                <chartingToolkit:LinearAxis Orientation="Y" Location="Left" Title="Mine-thower hits health" Minimum="0"/>
+                <chartingToolkit:LinearAxis Orientation="X" Location="Bottom" Title="Mine-thower number" Minimum="0"/>
+            </chartingToolkit:Chart.Axes>
+
+        </chartingToolkit:Chart>
+    </Grid>
+</Window>

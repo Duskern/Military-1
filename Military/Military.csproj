@@ -109,6 +109,9 @@
     <Compile Include="EmptyTarget.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="MineThower.cs" />
+    <Compile Include="MineThowerStats.xaml.cs">
+      <DependentUpon>MineThowerStats.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Target.cs" />
     <Compile Include="TargetStats.xaml.cs">
       <DependentUpon>TargetStats.xaml</DependentUpon>
@@ -129,6 +132,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MineThowerStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TargetStats.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

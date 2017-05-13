@@ -33,14 +33,14 @@
                                   Color="LightCoral" />
             </Border.Effect>
         </Border>
-        <Label Margin="32,17,917,647"
+        <Label Margin="36,8,1087,656"
                Content="6"
                FontFamily="Wingdings"
                FontSize="25"
                FontWeight="Bold"
                Foreground="#FFB7D414" />
         <Label x:Name="OptionStartLabel"
-               Margin="58,19,0,0"
+               Margin="62,10,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Military maneurus"
@@ -65,7 +65,7 @@
                FontStyle="Italic"
                Foreground="#FFC415D6"
                RenderTransformOrigin="-4.829,-1.288" />
-        <Border Margin="19,50,886,471"
+        <Border Margin="19,46,886,471"
                 BorderBrush="#FF73CB0F"
                 BorderThickness="3"
                 CornerRadius="25">
@@ -92,14 +92,14 @@
                 VerticalAlignment="Top"
                 Content="Start military maneurus"
                 RenderTransformOrigin="2.862,0.366" Click="button_Start_Click" />
-        <Label Margin="18,280,1109,382"
+        <Label Margin="20,275,1107,387"
                Content="9"
                FontFamily="Wingdings"
                FontSize="25"
                FontWeight="Bold"
                Foreground="Crimson" />
         <Label x:Name="OptionStateLabel"
-               Margin="57,285,0,0"
+               Margin="59,280,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Targets state :"
@@ -307,7 +307,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Aviations statistic" 
-            RenderTransformOrigin="2.862,0.366" Click="button_AviationStats_Click" />
+            RenderTransformOrigin="2.862,0.366" />
         <Button x:Name="button_MineThowerStats"   
             IsEnabled="False"  
             Width="212"

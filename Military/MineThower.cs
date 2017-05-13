@@ -20,7 +20,6 @@ namespace Military
         public event ItemEnabled Enabled;
         public int Name { get; set; }
         public int CountHit { get; set; }
-        public int TotalDamage { get; set; }
         public Random Random { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
         int currentTime = 0;
@@ -29,7 +28,7 @@ namespace Military
         {
             Name = сode;
             CountHit = 0;
-            TotalDamage = 0; 
+
             Random = random;
         }
 
@@ -47,7 +46,6 @@ namespace Military
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     Targets[TargetIndex].HealthPoints -= damage;
-                    DrawingTarget.Invoke(this);
                     CountHit++;
                 }
                 else
@@ -55,7 +53,7 @@ namespace Military
                     Targets[TargetIndex].HealthPoints -= damage;
                     CountHit++;
                 }
-                TotalDamage += damage; 
+                DrawingTarget.Invoke(this);
             }
             if (currentTime == commonTime-2)
             {

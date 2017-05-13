@@ -38,6 +38,7 @@ namespace Military
         private object threadLock = new object();
         public PointCollection pointsCollection = new PointCollection();
         public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>();
+        public static List<KeyValuePair<int, int>> mineThowersStats = new List<KeyValuePair<int, int>>();
         public static List<List<KeyValuePair<int, int>>> aviationsStats = new List<List<KeyValuePair<int, int>>>();
         Random random = new Random(); bool mess = true;
 
@@ -176,9 +177,6 @@ namespace Military
         {
             try
             {
-
-            }
-            catch (Exception){}
                 Dispatcher.Invoke((Action)delegate
                 {
                 if (target.GetType() == typeof(Target))
@@ -217,7 +215,9 @@ namespace Military
                         EmptyUI.Fill = generator.emptiesColor(target);
                         root_Canvas.Children.Add(EmptyUI);
                     }
-                });          
+                });
+            }
+            catch (Exception){}
         }
 
         private void initTarget(Target target)
@@ -297,10 +297,15 @@ namespace Military
 
         private void button_TargetStats_Click(object sender, RoutedEventArgs e)
         {
-            targetsStats = new List<KeyValuePair<int, int>>(); 
-            List<Target> targets =  TargetList.ToList();
+            ShowTargetsStats();
+        }
 
-            for (int  i = 0;  i < targets.Count;  i++)
+        private void ShowTargetsStats()
+        {
+            targetsStats = new List<KeyValuePair<int, int>>();
+            List<Target> targets = TargetList.ToList();
+
+            for (int i = 0; i < targets.Count; i++)
             {
                 if (targets[i].HealthPoints < 0)
                 {
@@ -327,12 +332,13 @@ namespace Military
                 {
                     if (mess)
                     {
-                        MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        //MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                         button_Generate.IsEnabled = true;
                         button_TargetStats.IsEnabled = true;
                         button_MineThowerStats.IsEnabled = true;
                         button_AviationStats.IsEnabled = true;
                         mess = false;
+                        ShowTargetsStats();
                     }
                     else
                     {
@@ -361,6 +367,19 @@ namespace Military
             aviationsStats.Add(destroyed);
             AviationStats aviaStatistic = new AviationStats();
             aviaStatistic.ShowDialog();
+        }
+
+        private void button_MineThowerStats_Click(object sender, RoutedEventArgs e)
+        {
+            mineThowersStats = new List<KeyValuePair<int, int>>();
+            List<MineThower> mineThowers = MineThowerList.ToList();
+            mineThowers.OrderBy(x => x.Name).ToList();
+            foreach (var mineThower in mineThowers)
+            {
+                mineThowersStats.Add(new KeyValuePair<int, int>(mineThower.Name, mineThower.CountHit));
+            }
+            MineThowerStats thowerStats = new MineThowerStats();
+            thowerStats.ShowDialog();
         }
     }
 }
