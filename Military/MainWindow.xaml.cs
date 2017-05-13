@@ -37,7 +37,8 @@ namespace Military
         public Polyline TargetUI = new Polyline();
         private object threadLock = new object();
         public PointCollection pointsCollection = new PointCollection();
-        public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>(); 
+        public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>();
+        public static List<List<KeyValuePair<int, int>>> aviationsStats = new List<List<KeyValuePair<int, int>>>();
         Random random = new Random(); bool mess = true;
 
         public MainWindow()
@@ -339,6 +340,27 @@ namespace Military
                     }
                 });
             }
+        }
+
+        private void button_AviationStats_Click(object sender, RoutedEventArgs e)
+        {
+            aviationsStats = new List<List<KeyValuePair<int, int>>>();
+            List<Aviation> aviations = AviationList.ToList();
+            aviations.OrderBy(x => x.Name).ToList();
+            List<KeyValuePair<int, int>> hit = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> shell = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> destroyed = new List<KeyValuePair<int, int>>();
+            foreach (var aircraft in aviations)
+            {
+                hit.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountHit));
+                shell.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountShell)); 
+                destroyed.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountDestroyed)); 
+            }
+            aviationsStats.Add(hit);
+            aviationsStats.Add(shell);
+            aviationsStats.Add(destroyed);
+            AviationStats aviaStatistic = new AviationStats();
+            aviaStatistic.ShowDialog();
         }
     }
 }

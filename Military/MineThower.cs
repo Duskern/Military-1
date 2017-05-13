@@ -18,7 +18,7 @@ namespace Military
     {
         public event DeleGateDraw DrawingTarget;
         public event ItemEnabled Enabled;
-        public string Name { get; set; }
+        public int Name { get; set; }
         public int CountHit { get; set; }
         public int TotalDamage { get; set; }
         public Random Random { get; set; }
@@ -27,7 +27,7 @@ namespace Military
 
         public MineThower(Random random, int сode)
         {
-            Name = "Mine-thrower #" + сode.ToString();
+            Name = сode;
             CountHit = 0;
             TotalDamage = 0; 
             Random = random;

@@ -87,12 +87,13 @@ namespace Military
         {
             int currentCount = 0;
             int avaiationCount = random.Next(1, trueCount/4);
-            int code = random.Next(10001, 99998);
+            int code = 1;
             AviationList = new ObservableCollection<Aviation>();
             do
             {
                 AviationList.Add(new Aviation(random, code));
                 currentCount++;
+                code++;
             }
             while (currentCount < avaiationCount);
             return AviationList.Count;
@@ -102,12 +103,13 @@ namespace Military
         {
             int currentCount = 0;
             int mineThowerCount = random.Next(1, trueCount/4);
-            int code = random.Next(10001, 99998);
+            int code = 1;
             MineThowerList = new ObservableCollection<MineThower>();
             do
             {
                 MineThowerList.Add(new MineThower(random, code));
                 currentCount++;
+                code++;
             }
             while (currentCount < mineThowerCount);
             return MineThowerList.Count;

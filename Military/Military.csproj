@@ -103,6 +103,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Aviation.cs" />
+    <Compile Include="AviationStats.xaml.cs">
+      <DependentUpon>AviationStats.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EmptyTarget.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="MineThower.cs" />
@@ -110,6 +113,10 @@
     <Compile Include="TargetStats.xaml.cs">
       <DependentUpon>TargetStats.xaml</DependentUpon>
     </Compile>
+    <Page Include="AviationStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

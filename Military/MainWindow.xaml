@@ -307,7 +307,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Aviations statistic" 
-            RenderTransformOrigin="2.862,0.366" />
+            RenderTransformOrigin="2.862,0.366" Click="button_AviationStats_Click" />
         <Button x:Name="button_MineThowerStats"   
             IsEnabled="False"  
             Width="212"

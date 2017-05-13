@@ -9,14 +9,13 @@
         Icon="C:\Users\Yulian\Desktop\Military\Military\Officer.png" 
         ResizeMode="NoResize"
         Title="Target statistic" Height="759.999" Width="1274.286" 
-        Background="LightCoral" Loaded="Window_Loaded" 
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Background="Black" Loaded="Window_Loaded">
     <Grid>
-        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Targets statistic" LegendTitle="Targets health" Foreground="DarkOrchid" FontSize="15" Background="MistyRose" Name="mChart"  Height="687" Width="1225">
+        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="14,10,0,0" VerticalAlignment="Top" Title="Targets statistic" LegendTitle="Statistic value" Foreground="Coral" FontSize="15" Background="Black" Name="mChart"  Height="687" Width="1225">
             <chartingToolkit:AreaSeries DependentValuePath="Value"  Title="Health" IndependentValuePath="Key" ItemsSource="{Binding}"> 
                 <chartingToolkit:AreaSeries.DataPointStyle>
                     <Style TargetType="chartingToolkit:AreaDataPoint">
-                        <Setter Property="Background" Value="DeepSkyBlue"/>
+                        <Setter Property="Background" Value="Lime"/>
                     </Style>
                 </chartingToolkit:AreaSeries.DataPointStyle>
             </chartingToolkit:AreaSeries>
