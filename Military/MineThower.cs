@@ -32,7 +32,7 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message, int last)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -40,7 +40,11 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
-                Thread.Sleep(Random.Next(85, 160));
+                if (currentTime >= commonTime - 2)
+                {
+                    return;
+                }
+                Thread.Sleep(Random.Next(65, 110));
                 int TargetIndex = Random.Next(Targets.Count);
                 int damage = Random.Next(35, 45);
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
@@ -55,16 +59,13 @@ namespace Military
                 }
                 DrawingTarget.Invoke(this);
             }
-            if (currentTime == commonTime-2)
+            if (message && Thread.CurrentThread.Name == last.ToString())
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                if (message)
-                { 
-                    Enabled.Invoke(this);
-                }
-                return;
+                Enabled.Invoke(this);
             }
+            return;
         }
 
         private void dispatcherTimerWork_Tick(object sender, EventArgs e)

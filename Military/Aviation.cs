@@ -32,7 +32,7 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message, List<int> targetsIndex)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message, List<int> targetsIndex, int last)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -40,13 +40,17 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
+                if (currentTime >= commonTime - 2)
+                {
+                    return;
+                }
                 int randomIndex = Random.Next(targetsIndex.Count);
                 int TargetIndex = targetsIndex[randomIndex];
                 if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     if (CountShell > 0)
                     {
-                        Thread.Sleep(Random.Next(70, 150));
+                        Thread.Sleep(Random.Next(90, 130));
                         if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
                         {
                             CountDestroyed++;
@@ -58,16 +62,12 @@ namespace Military
                     }
                 }
             }
-            if (currentTime == commonTime - 2)
-            {
-                timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
-                timer.Stop();
-                if (message)
-                {   
+                if (message && Thread.CurrentThread.Name==last.ToString())
+                {   timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
+                    timer.Stop();
                     Enabled.Invoke(this);
                 }
                 return;
-            }
         }
             private void dispatcherTimerWork_Tick(object sender, EventArgs e)
             {

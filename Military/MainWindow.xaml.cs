@@ -101,8 +101,8 @@ namespace Military
             {
                 MessageBox.Show(argumentException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            int countThreadsMine = MineThowerList.Count;
-            int countThreadsAviations = AviationList.Count;
+            int countThreadsMine = MineThowerList.Count - 1;
+            int countThreadsAviations = AviationList.Count - 1;
             bool messageAvia = false;
             bool messageThower = false;
             if (countThreadsMine == countThreadsAviations)
@@ -116,7 +116,7 @@ namespace Military
             }
             foreach (var item in MineThowerList)
             {
-                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageThower)));
+                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageThower, countThreadsMine)));
                 item.DrawingTarget += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
@@ -126,7 +126,7 @@ namespace Military
             }
             foreach (var item in AviationList)
             {
-                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageAvia, targetsIndex)));
+                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageAvia, targetsIndex, countThreadsAviations)));
                 item.DrawingAvia += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
@@ -134,7 +134,7 @@ namespace Military
             {
                 AviationsThreads[i].Name = i.ToString();
             }
-            //StartMineThowers();
+            StartMineThowers();
             StartAviations();
             button_Start.IsEnabled = false;
         }

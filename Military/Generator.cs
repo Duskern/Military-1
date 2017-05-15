@@ -24,7 +24,6 @@ namespace Military
             TargetList = new ObservableCollection<Target>();
             targetsIndex = new List<int>();
             int currentCount = 0;
-            int index = 0;
             int less = 0;
             int code = 0;
             int x0 = 0, y0 = 10, xMax = 840, yMax = 600;
@@ -40,7 +39,7 @@ namespace Military
                     }
                     if (y0 <= yMax)
                     {
-                        Target target = new Target(x0, y0 + 5, code);
+                        Target target = new Target(x0, y0 + 7, code);
                         TargetList.Add(target);
                         targetsIndex.Add(TargetList.IndexOf(target));
                         x0 += 30;
@@ -131,13 +130,15 @@ namespace Military
 
         public SolidColorBrush emptiesColor(Target target)
         {
+            Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
             if (target.HealthPoints == 100)
             {
                 return new SolidColorBrush(Colors.Black);
             }
             else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
             {
-                return new SolidColorBrush(Colors.Lime);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 55 && target.HealthPoints == 50)
             {
@@ -145,15 +146,16 @@ namespace Military
             }
             else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
             {
-                return new SolidColorBrush(Colors.Magenta);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
             {
-                return new SolidColorBrush(Colors.OrangeRed);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
                 return new SolidColorBrush(randomColor);
             }
         }
