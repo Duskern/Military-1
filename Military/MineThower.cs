@@ -17,7 +17,6 @@ namespace Military
     public class MineThower
     {
         public event DeleGateDraw DrawingTarget;
-        public event ItemEnabled Enabled;
         public int Name { get; set; }
         public int CountHit { get; set; }
         public Random Random { get; set; }
@@ -32,15 +31,15 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, int countThreadsMine, bool message)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
             currentTime = 0;
-            while (currentTime < commonTime - 2)
+            while (currentTime < commonTime)
             {
-                Thread.Sleep(Random.Next(85, 160));
+                Thread.Sleep(Random.Next(230, 260));
                 int TargetIndex = Random.Next(Targets.Count);
                 int damage = Random.Next(35, 45);
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
@@ -53,16 +52,16 @@ namespace Military
                     Targets[TargetIndex].HealthPoints -= damage;
                     CountHit++;
                 }
-                DrawingTarget.Invoke(this);
+                try
+                {
+                    DrawingTarget.Invoke(this);
+                }
+                catch (Exception){}
             }
-            if (currentTime == commonTime-2)
+            if (currentTime == commonTime)
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                if (message)
-                { 
-                    Enabled.Invoke(this);
-                }
                 return;
             }
         }

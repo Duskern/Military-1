@@ -40,7 +40,9 @@ namespace Military
         public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>();
         public static List<KeyValuePair<int, int>> mineThowersStats = new List<KeyValuePair<int, int>>();
         public static List<List<KeyValuePair<int, int>>> aviationsStats = new List<List<KeyValuePair<int, int>>>();
-        Random random = new Random(); bool mess = true;
+        Random random = new Random();
+        DispatcherTimer timer = new DispatcherTimer();
+        int currentTime = 0;
 
         public MainWindow()
         {
@@ -51,6 +53,7 @@ namespace Military
             OptionTarget.Children.Add(EmptyUI);
             OptionTarget.Children.Add(nextOption);
         }
+        
 
         private void button_Generate_Click(object sender, RoutedEventArgs e)
         {
@@ -92,7 +95,6 @@ namespace Military
 
         private void button_Start_Click(object sender, RoutedEventArgs e)
         {
-            mess = true;
             button_Generate.IsEnabled = false;
             try
             {
@@ -106,42 +108,44 @@ namespace Military
             {
                 MessageBox.Show(argumentException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            int countThreadsMine = MineThowerList.Count;
-            int countThreadsAviations = AviationList.Count;
-            bool messageAvia = false;
-            bool messageThower = false;
-            if (countThreadsMine == countThreadsAviations)
-            {
-                messageAvia = true;
-            }
-            else
-            {
-                messageThower = (countThreadsMine > countThreadsAviations) ? true : false;
-                messageAvia = (countThreadsMine < countThreadsAviations) ? true : false;
-            }
             foreach (var item in MineThowerList)
             {
-                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsMine, messageThower)));
+                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time)));
                 item.DrawingTarget += DrawEventTargets;
-                item.Enabled += Item_Enabled;
-            }
-            for (int i = 0; i < Mine_ThrowersThreads.Count; i++)
-            {
-                Mine_ThrowersThreads[i].Name = i.ToString();
             }
             foreach (var item in AviationList)
             {
-                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsAviations, messageAvia)));
+                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time)));
                 item.DrawingAvia += DrawEventTargets;
-                item.Enabled += Item_Enabled;
             }
-            for (int i = 0; i < AviationsThreads.Count; i++)
-            {
-                AviationsThreads[i].Name = i.ToString();
-            }
+            currentTime = 0;
+            timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
             StartMineThowers();
             StartAviations();
             button_Start.IsEnabled = false;
+        }
+        
+        private void dispatcherTimerWork_Tick(object sender, EventArgs e)
+        {
+            currentTime++;
+            if (currentTime == time + 7)
+            {
+                foreach (var item in MineThowerList)
+                {
+                    item.DrawingTarget -= DrawEventTargets;
+                }
+                foreach (var item in MineThowerList)
+                {
+                    item.DrawingTarget -= DrawEventTargets;
+                }
+                button_Generate.IsEnabled = true;
+                button_TargetStats.IsEnabled = true;
+                button_MineThowerStats.IsEnabled = true;
+                button_AviationStats.IsEnabled = true;
+                ShowTargetsStats();
+            }
         }
 
         private void DrawEventTargets(object sender)
@@ -181,23 +185,23 @@ namespace Military
                 {
                 if (target.GetType() == typeof(Target))
                 {
-                        pointsCollection = new PointCollection();
+                        pointsCollection = new PointCollection(); ;
                         TargetUI = new Polyline();
                         pointsCollection.Add(new Point(target.X, target.Y));
-                        pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
-                        pointsCollection.Add(new Point(target.X + 13, target.Y));
-                        pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
-                        pointsCollection.Add(new Point(target.X, target.Y + 8));
+                        pointsCollection.Add(new Point(target.X + 14, target.Y - 16));
+                        pointsCollection.Add(new Point(target.X + 26, target.Y));
+                        pointsCollection.Add(new Point(target.X + 26, target.Y + 14));
+                        pointsCollection.Add(new Point(target.X, target.Y + 14));
                         TargetUI.Points = pointsCollection;
                         TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
-                        TargetUI.Fill = generator.targertsColor(target); 
-                        TargetUI.StrokeThickness = 1.5;
+                        TargetUI.Fill = generator.targertsColor(target);
+                        TargetUI.StrokeThickness = 1;
                         int targetNumber = TargetList.IndexOf(target);
                         TextBlock targetNumberUI = new TextBlock();
                         targetNumberUI.Text = target.Name.ToString();
-                        targetNumberUI.FontSize = 7;
+                        targetNumberUI.FontSize = 13;
                         targetNumberUI.FontStyle = FontStyles.Italic;
-                        targetNumberUI.Foreground = new SolidColorBrush(Colors.DarkOrchid);
+                        targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
                         targetNumberUI.FontWeight = FontWeights.Bold;
                         Canvas.SetLeft(targetNumberUI, target.X);
                         Canvas.SetTop(targetNumberUI, target.Y - 2);
@@ -208,10 +212,10 @@ namespace Military
                     {
                         Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                         EmptyUI = new Ellipse();
-                        EmptyUI.Width = 10;
-                        EmptyUI.Height = 10;
-                        EmptyUI.StrokeThickness = 5;
-                        EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                        EmptyUI.Width = 25;
+                        EmptyUI.Height = 25;
+                        EmptyUI.StrokeThickness = 1;
+                        EmptyUI.Margin = new Thickness(target.X, target.Y, 1, 1);
                         EmptyUI.Fill = generator.emptiesColor(target);
                         root_Canvas.Children.Add(EmptyUI);
                     }
@@ -227,18 +231,18 @@ namespace Military
                 pointsCollection = new PointCollection(); ;
                 TargetUI = new Polyline();
                 pointsCollection.Add(new Point(target.X, target.Y));
-                pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
-                pointsCollection.Add(new Point(target.X + 13, target.Y));
-                pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
-                pointsCollection.Add(new Point(target.X, target.Y + 8));
+                pointsCollection.Add(new Point(target.X + 14, target.Y - 16));
+                pointsCollection.Add(new Point(target.X + 26, target.Y));
+                pointsCollection.Add(new Point(target.X + 26, target.Y + 14));
+                pointsCollection.Add(new Point(target.X, target.Y + 14));
                 TargetUI.Points = pointsCollection;
                 TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
                 TargetUI.Fill = generator.targertsColor(target);
-                TargetUI.StrokeThickness = 2;
+                TargetUI.StrokeThickness = 1;
                 int targetNumber = TargetList.IndexOf(target);
                 TextBlock targetNumberUI = new TextBlock();
                 targetNumberUI.Text = target.Name.ToString();
-                targetNumberUI.FontSize = 7;
+                targetNumberUI.FontSize = 13;
                 targetNumberUI.FontStyle = FontStyles.Italic;
                 targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
                 targetNumberUI.FontWeight = FontWeights.Bold;
@@ -250,11 +254,11 @@ namespace Military
             else
             {
                 EmptyUI = new Ellipse();
-                EmptyUI.Width = 10;
-                EmptyUI.Height = 10;
-                EmptyUI.StrokeThickness = 5;
-                EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-                EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
+                EmptyUI.Width = 25;
+                EmptyUI.Height = 25;
+                EmptyUI.StrokeThickness = 1;
+                EmptyUI.Margin = new Thickness(target.X, target.Y, 1, 1);
+                EmptyUI.Fill = new SolidColorBrush(Colors.Black);
                 root_Canvas.Children.Add(EmptyUI);
             }
         }
@@ -322,30 +326,6 @@ namespace Military
             }
             TargetStats targetChar = new TargetStats();
             targetChar.ShowDialog();
-        }
-
-        private void Item_Enabled(object sender)
-        {
-            lock (threadLock)
-            {
-                Dispatcher.Invoke((Action)delegate
-                {
-                    if (mess)
-                    {
-                        //MessageBox.Show("Shooting has been finished!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                        button_Generate.IsEnabled = true;
-                        button_TargetStats.IsEnabled = true;
-                        button_MineThowerStats.IsEnabled = true;
-                        button_AviationStats.IsEnabled = true;
-                        mess = false;
-                        ShowTargetsStats();
-                    }
-                    else
-                    {
-                        return;
-                    }
-                });
-            }
         }
 
         private void button_AviationStats_Click(object sender, RoutedEventArgs e)

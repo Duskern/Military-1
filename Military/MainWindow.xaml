@@ -196,7 +196,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            TextWrapping="Wrap" BorderBrush="Red" Background="Red" Foreground="Red" SelectionBrush="Red" />
+            TextWrapping="Wrap" BorderBrush="Crimson" Background="Crimson" Foreground="Crimson" SelectionBrush="Crimson" />
         <Label Width="158"
             Margin="74,571,0,0"
             HorizontalAlignment="Left"
@@ -204,7 +204,7 @@
             Content="Target 100% hp lost"
             FontSize="16"
             FontStyle="Italic"
-            Foreground="Red" 
+            Foreground="Crimson" 
             RenderTransformOrigin="-4.829,-1.288" />
         <Border Margin="19,316,885,10"
             BorderBrush="Purple"

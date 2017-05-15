@@ -23,6 +23,10 @@ namespace Military
         {
             TargetList = new ObservableCollection<Target>();
             int targetCount = random.Next(10, militaries);
+            if (targetCount>20)
+            {
+                targetCount -= 10;
+            }
             int currentCount = 0;
             int less = 0;
             int code = 1;
@@ -30,8 +34,8 @@ namespace Military
             {
                 int x = random.Next(30, 820);
                 int y = random.Next(35, 577);
-                int valueMiss = random.Next(1, 12);
-                if (valueMiss == 3 || valueMiss == 7 || valueMiss == 9 || valueMiss == 5)
+                int valueMiss = random.Next(1, 30);
+                if (valueMiss == 3 )
                 {
                     Target target = new Target(x, y, code);
                     if (TargetList.Count == 0)
@@ -43,8 +47,8 @@ namespace Military
                     bool checkUnique = true;
                     foreach (Target tempTarget in TargetList)
                     {
-                        if (target.X > tempTarget.X - 25 && target.X < tempTarget.X + 25 &&
-                            target.Y > tempTarget.Y - 25 && target.Y < tempTarget.Y + 25)
+                        if (target.X > tempTarget.X - 40 && target.X < tempTarget.X + 40 &&
+                            target.Y > tempTarget.Y - 40 && target.Y < tempTarget.Y + 40)
                         {
                             checkUnique = false;
                         }
@@ -65,8 +69,24 @@ namespace Military
                     bool checkUniqueEmpty = true;
                     foreach (Target tempTarget in TargetList)
                     {
-                        if (x > tempTarget.X - 40 && x < tempTarget.X + 40 &&
-                            y > tempTarget.Y - 40 && y < tempTarget.Y + 40)
+                        if (x > tempTarget.X - 50 && x < tempTarget.X + 50 &&
+                            y > tempTarget.Y - 50 && y < tempTarget.Y + 50)
+                        {
+                            checkUniqueEmpty = false;
+                        }
+                    }
+                    if (checkUniqueEmpty)
+                    {
+                        TargetList.Add(new EmptyTarget(x, y, 0));
+                        less++;
+                    }
+                    x = random.Next(30, 820);
+                    y = random.Next(35, 577);
+                    checkUniqueEmpty = true;
+                    foreach (Target tempTarget in TargetList)
+                    {
+                        if (x > tempTarget.X - 50 && x < tempTarget.X + 50 &&
+                            y > tempTarget.Y - 50 && y < tempTarget.Y + 50)
                         {
                             checkUniqueEmpty = false;
                         }
@@ -139,7 +159,7 @@ namespace Military
             }
             else
             {
-                return new SolidColorBrush(Colors.Red);
+                return new SolidColorBrush(Colors.Crimson);
             }
         }
 
@@ -147,26 +167,31 @@ namespace Military
         {
             if (target.HealthPoints == 100)
             {
-                return new SolidColorBrush(Colors.MintCream);
+                return new SolidColorBrush(Colors.Black);
             }
             else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
             {
-                return new SolidColorBrush(Colors.Lime);
+                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 55 && target.HealthPoints == 50)
             {
-                return new SolidColorBrush(Colors.Yellow);
+                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
             {
-                return new SolidColorBrush(Colors.Magenta);
+                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
             {
-                return new SolidColorBrush(Colors.OrangeRed);
+                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else
             {
+                target.HealthPoints = 100;
                 Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
                 return new SolidColorBrush(randomColor);
             }
