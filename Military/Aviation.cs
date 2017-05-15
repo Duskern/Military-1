@@ -13,7 +13,6 @@ namespace Military
     public class Aviation
     {
         public event DeleGateDraw DrawingAvia;
-        public event ItemEnabled Enabled;
         private const int damage_degree = 50;
         public int Name { get; set; }
         public int CountDestroyed { get; set; } 
@@ -40,6 +39,19 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
+                //if (currentTime >= commonTime - 2 && Thread.CurrentThread.Name == countThreadsAviations.ToString())
+                //{
+                //    timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
+                //    timer.Stop();
+                //    if (message)
+                //    {
+                //        Enabled.Invoke(this);
+                //    }
+                //}
+                if (currentTime >= commonTime - 2)
+                {
+                    return;
+                }
                 int TargetIndex = Random.Next(Targets.Count);
                 if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
                 {
@@ -56,16 +68,6 @@ namespace Military
                         DrawingAvia.Invoke(this);
                     }
                 }
-            }
-            if (currentTime == commonTime - 2)
-            {
-                timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
-                timer.Stop();
-                if (message)
-                {   
-                    Enabled.Invoke(this);
-                }
-                return;
             }
         }
             private void dispatcherTimerWork_Tick(object sender, EventArgs e)

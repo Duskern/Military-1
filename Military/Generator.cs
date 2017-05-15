@@ -19,73 +19,58 @@ namespace Military
 
         public int trueCount { get; set; }
 
-        public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
+        public int GenereteTargets(ref ObservableCollection<Target> TargetList , ref List<int> targetsIndex)
         {
             TargetList = new ObservableCollection<Target>();
-            int targetCount = random.Next(10, militaries);
+            targetsIndex = new List<int>();
             int currentCount = 0;
             int less = 0;
-            int code = 1;
-            while (currentCount < targetCount)
+            int code = 0;
+            int x0 = 10, y0 = 10, xMax = 840, yMax = 600;
+            while (y0 < yMax)
             {
-                int x = random.Next(30, 820);
-                int y = random.Next(35, 577);
-                int valueMiss = random.Next(1, 12);
+                int valueMiss = random.Next(1, 40);
                 if (valueMiss == 3 || valueMiss == 7 || valueMiss == 9 || valueMiss == 5)
                 {
-                    Target target = new Target(x, y, code);
-                    if (TargetList.Count == 0)
+                    if (x0 >= xMax)
                     {
+                        x0 = 0;
+                        y0 += 30;
+                    }
+                    if (y0 <= yMax)
+                    {
+                        Target target = new Target(x0, y0 + 7, code);
                         TargetList.Add(target);
+                        targetsIndex.Add(TargetList.IndexOf(target));
+                        x0 += 30;
                         currentCount++;
                         code++;
-                    }
-                    bool checkUnique = true;
-                    foreach (Target tempTarget in TargetList)
-                    {
-                        if (target.X > tempTarget.X - 25 && target.X < tempTarget.X + 25 &&
-                            target.Y > tempTarget.Y - 25 && target.Y < tempTarget.Y + 25)
-                        {
-                            checkUnique = false;
-                        }
-                    }
-                    if (checkUnique)
-                    {
-                        TargetList.Add(target);
-                        currentCount++;
-                        code++;
+                        
                     }
                 }
                 else
                 {
-                    if (TargetList.Count == 0)
+                    if (x0 >= xMax)
                     {
-                        TargetList.Add(new EmptyTarget(x, y, 0));
+                        x0 = 0;
+                        y0 += 30;
                     }
-                    bool checkUniqueEmpty = true;
-                    foreach (Target tempTarget in TargetList)
+                    if (y0 <= yMax)
                     {
-                        if (x > tempTarget.X - 40 && x < tempTarget.X + 40 &&
-                            y > tempTarget.Y - 40 && y < tempTarget.Y + 40)
-                        {
-                            checkUniqueEmpty = false;
-                        }
-                    }
-                    if (checkUniqueEmpty)
-                    {
-                        TargetList.Add(new EmptyTarget(x, y, 0));
+                        TargetList.Add(new EmptyTarget(x0, y0 - 8, 0));
+                        x0 += 30;
                         less++;
                     }
                 }
             }
-            int count = TargetList.Count - less;
-            trueCount = count;
-            return count;
+            trueCount = TargetList.Count - less;
+            return trueCount;
         }
 
         public int GenerateAviations(ref ObservableCollection<Aviation> AviationList)
         {
             int currentCount = 0;
+            int a = trueCount;
             int avaiationCount = random.Next(2, trueCount/4);
             int code = 1;
             AviationList = new ObservableCollection<Aviation>();
@@ -101,8 +86,8 @@ namespace Military
 
         public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList)
         {
-            int currentCount = 0;
-            int mineThowerCount = random.Next(2, trueCount/4);
+            int currentCount = 0; 
+            int mineThowerCount = random.Next(2, trueCount/ 4);
             int code = 1;
             MineThowerList = new ObservableCollection<MineThower>();
             do
@@ -145,13 +130,15 @@ namespace Military
 
         public SolidColorBrush emptiesColor(Target target)
         {
+            Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
             if (target.HealthPoints == 100)
             {
-                return new SolidColorBrush(Colors.MintCream);
+                return new SolidColorBrush(Colors.Black);
             }
             else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
             {
-                return new SolidColorBrush(Colors.Lime);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 55 && target.HealthPoints == 50)
             {
@@ -159,18 +146,20 @@ namespace Military
             }
             else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
             {
-                return new SolidColorBrush(Colors.Magenta);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
             {
-                return new SolidColorBrush(Colors.OrangeRed);
+                randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                return new SolidColorBrush(randomColor);
             }
             else
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
                 return new SolidColorBrush(randomColor);
             }
         }
 
     }
 }
+ 

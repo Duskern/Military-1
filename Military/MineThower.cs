@@ -40,30 +40,32 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
+                //if (currentTime >= commonTime - 2 && Thread.CurrentThread.Name == countThreadsMine.ToString())
+                //{
+                //    timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
+                //    timer.Stop();
+                //    if (message)
+                //    {
+                //        Enabled.Invoke(this);
+                //    }
+                //}
+                if (currentTime >= commonTime - 2)
+                {
+                    return;
+                }
                 Thread.Sleep(Random.Next(85, 160));
                 int TargetIndex = Random.Next(Targets.Count);
                 int damage = Random.Next(35, 45);
                 if ((Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     Targets[TargetIndex].HealthPoints -= damage;
-                    CountHit++;
                 }
                 else
                 {
                     Targets[TargetIndex].HealthPoints -= damage;
-                    CountHit++;
                 }
+                CountHit++;
                 DrawingTarget.Invoke(this);
-            }
-            if (currentTime == commonTime-2)
-            {
-                timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
-                timer.Stop();
-                if (message)
-                { 
-                    Enabled.Invoke(this);
-                }
-                return;
             }
         }
 
