@@ -26,7 +26,7 @@ namespace Military
             int currentCount = 0;
             int index = 0;
             int less = 0;
-            int code = 1;
+            int code = 0;
             int x0 = 0, y0 = 10, xMax = 840, yMax = 600;
             while (y0 < yMax)
             {
@@ -42,11 +42,11 @@ namespace Military
                     {
                         Target target = new Target(x0, y0 + 5, code);
                         TargetList.Add(target);
+                        targetsIndex.Add(TargetList.IndexOf(target));
                         x0 += 30;
                         currentCount++;
-                        index++;
                         code++;
-                        targetsIndex.Add(index);
+                        
                     }
                 }
                 else

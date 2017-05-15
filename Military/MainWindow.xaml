@@ -248,7 +248,7 @@
             Foreground="#FF1EA6F3"
             RenderTransformOrigin="-4.829,-1.288" />
         <Border x:Name="Border_Option_Copy"
-            Margin="297,0,0,615"
+            Margin="292,0,0,615"
             Background="Black"
             BorderBrush="#FF2C32C3"
             BorderThickness="4"
