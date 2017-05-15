@@ -342,7 +342,7 @@ namespace Military
             }
         }
 
-        private void button_AviationStats_Click(object sender, RoutedEventArgs e)
+        private void button_AviationStats_Click_1(object sender, RoutedEventArgs e)
         {
             aviationsStats = new List<List<KeyValuePair<int, int>>>();
             List<Aviation> aviations = AviationList.ToList();
@@ -353,8 +353,8 @@ namespace Military
             foreach (var aircraft in aviations)
             {
                 hit.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountHit));
-                shell.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountShell)); 
-                destroyed.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountDestroyed)); 
+                shell.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountShell));
+                destroyed.Add(new KeyValuePair<int, int>(aircraft.Name, aircraft.CountDestroyed));
             }
             aviationsStats.Add(hit);
             aviationsStats.Add(shell);
@@ -363,7 +363,7 @@ namespace Military
             aviaStatistic.ShowDialog();
         }
 
-        private void button_MineThowerStats_Click(object sender, RoutedEventArgs e)
+        private void button_MineThowerStats_Click_1(object sender, RoutedEventArgs e)
         {
             mineThowersStats = new List<KeyValuePair<int, int>>();
             List<MineThower> mineThowers = MineThowerList.ToList();
@@ -374,11 +374,6 @@ namespace Military
             }
             MineThowerStats thowerStats = new MineThowerStats();
             thowerStats.ShowDialog();
-        }
-
-        private void button_AviationStats_Click_1(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

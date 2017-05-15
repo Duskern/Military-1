@@ -263,7 +263,7 @@
         <Button x:Name="button_TargetStats"    
             IsEnabled="False" 
             Width="174"
-            Margin="323,12,0,0"
+            Margin="323,10,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Targets statistic" 
@@ -286,7 +286,7 @@
         <Button x:Name="button_AviationStats"    
             IsEnabled="False" 
             Width="180"
-            Margin="722,12,0,0"
+            Margin="722,10,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Aviations statistic" 
@@ -294,11 +294,11 @@
         <Button x:Name="button_MineThowerStats"   
             IsEnabled="False"  
             Width="212"
-            Margin="934,14,0,0"
+            Margin="934,12,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Mine-thowers statistic" 
-            RenderTransformOrigin="2.862,0.366" />
+            RenderTransformOrigin="2.862,0.366" Click="button_MineThowerStats_Click_1" />
         <Canvas x:Name="OptionTarget" HorizontalAlignment="Left" Height="70" Margin="31,302,0,0" VerticalAlignment="Top" Width="163"/>
     </Grid>
 </Window>
