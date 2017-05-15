@@ -32,7 +32,7 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, int countThreadsMine, bool message)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);

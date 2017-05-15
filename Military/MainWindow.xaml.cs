@@ -21,7 +21,6 @@ namespace Military
 {
     public partial class MainWindow : Window
     {
-        int militaries = 70;
         double time = 10;
         Ellipse EmptyUI = new Ellipse();
         TextBlock nextOption;
@@ -36,6 +35,7 @@ namespace Military
         DispatcherTimer dispatcherTimerGen = new DispatcherTimer();
         public Polyline TargetUI = new Polyline();
         private object threadLock = new object();
+        public List<int> targetsIndex = new List<int>();
         public PointCollection pointsCollection = new PointCollection();
         public static List<KeyValuePair<int, int>> targetsStats = new List<KeyValuePair<int, int>>();
         public static List<KeyValuePair<int, int>> mineThowersStats = new List<KeyValuePair<int, int>>();
@@ -60,13 +60,8 @@ namespace Military
                 AviationsThreads.Clear();
                 Thread.Sleep(100);
                 root_Canvas.Children.Clear();
-                militaries = Convert.ToInt32(militaries_Count.Text);
-                if (militaries <= 0)
-                {
-                    throw new Exception("Count of militaries can't be less or equal 0");
-                }
                 Thread.Sleep(200);
-                int targetCount = generator.GenereteTargets(ref TargetList, militaries);
+                int targetCount = generator.GenereteTargets(ref TargetList, ref targetsIndex);
                 Thread.Sleep(300);
                 int avaiationCount = generator.GenerateAviations(ref AviationList);
                 int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList);
@@ -121,7 +116,7 @@ namespace Military
             }
             foreach (var item in MineThowerList)
             {
-                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsMine, messageThower)));
+                Mine_ThrowersThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageThower)));
                 item.DrawingTarget += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
@@ -131,7 +126,7 @@ namespace Military
             }
             foreach (var item in AviationList)
             {
-                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, countThreadsAviations, messageAvia)));
+                AviationsThreads.Add(new Thread(() => item.Shoot(ref TargetList, time, messageAvia, targetsIndex)));
                 item.DrawingAvia += DrawEventTargets;
                 item.Enabled += Item_Enabled;
             }
@@ -139,7 +134,7 @@ namespace Military
             {
                 AviationsThreads[i].Name = i.ToString();
             }
-            StartMineThowers();
+            //StartMineThowers();
             StartAviations();
             button_Start.IsEnabled = false;
         }
@@ -179,25 +174,25 @@ namespace Military
             {
                 Dispatcher.Invoke((Action)delegate
                 {
-                if (target.GetType() == typeof(Target))
-                {
-                        pointsCollection = new PointCollection();
+                    if (target.GetType() == typeof(Target))
+                    {
+                        pointsCollection = new PointCollection(); ;
                         TargetUI = new Polyline();
                         pointsCollection.Add(new Point(target.X, target.Y));
-                        pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
-                        pointsCollection.Add(new Point(target.X + 13, target.Y));
-                        pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
-                        pointsCollection.Add(new Point(target.X, target.Y + 8));
+                        pointsCollection.Add(new Point(target.X + 14, target.Y - 16));
+                        pointsCollection.Add(new Point(target.X + 26, target.Y));
+                        pointsCollection.Add(new Point(target.X + 26, target.Y + 14));
+                        pointsCollection.Add(new Point(target.X, target.Y + 14));
                         TargetUI.Points = pointsCollection;
                         TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
-                        TargetUI.Fill = generator.targertsColor(target); 
-                        TargetUI.StrokeThickness = 1.5;
+                        TargetUI.Fill = generator.targertsColor(target);
+                        TargetUI.StrokeThickness = 1;
                         int targetNumber = TargetList.IndexOf(target);
                         TextBlock targetNumberUI = new TextBlock();
                         targetNumberUI.Text = target.Name.ToString();
-                        targetNumberUI.FontSize = 7;
+                        targetNumberUI.FontSize = 13;
                         targetNumberUI.FontStyle = FontStyles.Italic;
-                        targetNumberUI.Foreground = new SolidColorBrush(Colors.DarkOrchid);
+                        targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
                         targetNumberUI.FontWeight = FontWeights.Bold;
                         Canvas.SetLeft(targetNumberUI, target.X);
                         Canvas.SetTop(targetNumberUI, target.Y - 2);
@@ -206,12 +201,11 @@ namespace Military
                     }
                     else
                     {
-                        Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                         EmptyUI = new Ellipse();
-                        EmptyUI.Width = 10;
-                        EmptyUI.Height = 10;
-                        EmptyUI.StrokeThickness = 5;
-                        EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
+                        EmptyUI.Width = 25;
+                        EmptyUI.Height = 25;
+                        EmptyUI.StrokeThickness = 1;
+                        EmptyUI.Margin = new Thickness(target.X, target.Y, 1, 1);
                         EmptyUI.Fill = generator.emptiesColor(target);
                         root_Canvas.Children.Add(EmptyUI);
                     }
@@ -227,18 +221,18 @@ namespace Military
                 pointsCollection = new PointCollection(); ;
                 TargetUI = new Polyline();
                 pointsCollection.Add(new Point(target.X, target.Y));
-                pointsCollection.Add(new Point(target.X + 7, target.Y - 8));
-                pointsCollection.Add(new Point(target.X + 13, target.Y));
-                pointsCollection.Add(new Point(target.X + 13, target.Y + 8));
-                pointsCollection.Add(new Point(target.X, target.Y + 8));
+                pointsCollection.Add(new Point(target.X + 14, target.Y - 16));
+                pointsCollection.Add(new Point(target.X + 26, target.Y));
+                pointsCollection.Add(new Point(target.X + 26, target.Y + 14));
+                pointsCollection.Add(new Point(target.X, target.Y + 14));
                 TargetUI.Points = pointsCollection;
                 TargetUI.StrokeDashArray = new DoubleCollection() { 5, 1, 3, 1 };
                 TargetUI.Fill = generator.targertsColor(target);
-                TargetUI.StrokeThickness = 2;
+                TargetUI.StrokeThickness = 1;
                 int targetNumber = TargetList.IndexOf(target);
                 TextBlock targetNumberUI = new TextBlock();
                 targetNumberUI.Text = target.Name.ToString();
-                targetNumberUI.FontSize = 7;
+                targetNumberUI.FontSize = 13;
                 targetNumberUI.FontStyle = FontStyles.Italic;
                 targetNumberUI.Foreground = new SolidColorBrush(Colors.Black);
                 targetNumberUI.FontWeight = FontWeights.Bold;
@@ -250,11 +244,11 @@ namespace Military
             else
             {
                 EmptyUI = new Ellipse();
-                EmptyUI.Width = 10;
-                EmptyUI.Height = 10;
-                EmptyUI.StrokeThickness = 5;
-                EmptyUI.Margin = new Thickness(target.X - 5, target.Y - 5, 1, 1);
-                EmptyUI.Fill = new SolidColorBrush(Colors.MintCream);
+                EmptyUI.Width = 25;
+                EmptyUI.Height = 25;
+                EmptyUI.StrokeThickness = 1;
+                EmptyUI.Margin = new Thickness(target.X, target.Y, 1, 1);
+                EmptyUI.Fill = new SolidColorBrush(Colors.Black);
                 root_Canvas.Children.Add(EmptyUI);
             }
         }
@@ -380,6 +374,11 @@ namespace Military
             }
             MineThowerStats thowerStats = new MineThowerStats();
             thowerStats.ShowDialog();
+        }
+
+        private void button_AviationStats_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

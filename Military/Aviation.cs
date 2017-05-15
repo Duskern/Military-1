@@ -32,7 +32,7 @@ namespace Military
             Random = random;
         }
 
-        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, int countThreadsAviations, bool message)
+        public void Shoot(ref ObservableCollection<Target> Targets, double commonTime, bool message, List<int> targetsIndex)
         {
             timer.Tick += new EventHandler(dispatcherTimerWork_Tick);
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -40,12 +40,13 @@ namespace Military
             currentTime = 0;
             while (currentTime < commonTime - 2)
             {
-                int TargetIndex = Random.Next(Targets.Count);
+                int randomIndex = Random.Next(targetsIndex.Count);
+                int TargetIndex = targetsIndex[randomIndex];
                 if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
                 {
                     if (CountShell > 0)
                     {
-                        Thread.Sleep(Random.Next(85, 160));
+                        Thread.Sleep(Random.Next(185, 360));
                         if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
                         {
                             CountDestroyed++;
