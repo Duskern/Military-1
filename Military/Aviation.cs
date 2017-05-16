@@ -37,7 +37,7 @@ namespace Military
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
             currentTime = 0;
-            int TargetIndex = 0;
+            int TargetIndex = 0; 
             while (currentTime <= commonTime)
             {
                 if (StopThowersTime(commonTime))

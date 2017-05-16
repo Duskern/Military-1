@@ -37,6 +37,8 @@ namespace Military
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
             currentTime = 0;
+            int TargetIndex = 0;
+            int targetCount = Targets.Count;
             while (currentTime <= commonTime)
             {
                 if (StopThowersTime(commonTime))
@@ -46,18 +48,10 @@ namespace Military
                 else
                 {
                     Thread.Sleep(Random.Next(130, 160));
-                    int TargetIndex = Random.Next(Targets.Count);
+                    TargetIndex = Random.Next(Targets.Count);
                     int damage = Random.Next(35, 45);
-                    if ((Targets[TargetIndex].GetType() == typeof(Target)))
-                    {
-                        Targets[TargetIndex].HealthPoints -= damage;
-                        CountHit++;
-                    }
-                    else
-                    {
-                        Targets[TargetIndex].HealthPoints -= damage;
-                        CountHit++;
-                    }
+                    Targets[TargetIndex].HealthPoints -= damage;
+                    CountHit++;
                     DrawingTarget.Invoke(this);
                 }
             }

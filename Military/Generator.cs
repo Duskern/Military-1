@@ -29,7 +29,7 @@ namespace Military
             while (y0 < yMax)
             {
                 int valueMiss = random.Next(1, 40);
-                if (valueMiss == 3 || valueMiss == 7)
+                if (valueMiss == 3 || valueMiss == 7 || valueMiss == 10)
                 {
                     if (x0 >= xMax)
                     {

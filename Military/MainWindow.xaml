@@ -215,7 +215,8 @@
             VerticalAlignment="Top"
             FontSize="16"
             Text="10"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" 
+            PreviewTextInput="NumberValidationTextBox"/>
         <Label Margin="32,585,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
