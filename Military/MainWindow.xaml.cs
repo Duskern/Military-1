@@ -45,29 +45,9 @@ namespace Military
         private void button_Generate_Click(object sender, RoutedEventArgs e)
         {
             try
-            { 
+            {
                 root_Canvas.Children.Clear();
-              //   < Line  X1 = "0" X2 = "860" Y1 = "620" Y2 = "620" Fill = "Crimson"
-              //      Stroke = "Crimson" StrokeThickness = "10" />
-  
-              //< Line  X1 = "850" X2 = "850" Y1 = "0" Y2 = "628" Fill = "Crimson"
-              //      Stroke = "Crimson" StrokeThickness = "10" />
-                  Line downLine = new Line();
-                downLine.X1 = 0;
-                downLine.X2 = 870;
-                downLine.Y1 = 612;
-                downLine.Y2 = 612;
-                downLine.StrokeThickness = 20;
-                Line sideLine = new Line();
-                sideLine.X1 = 850;
-                sideLine.Y1 = 0;
-                sideLine.X2 = 850;
-                sideLine.Y2 = 602; 
-                sideLine.StrokeThickness = 24;
-                downLine.Stroke = new SolidColorBrush(Colors.Lime);
-                sideLine.Stroke = new SolidColorBrush(Colors.Yellow);
-                root_Canvas.Children.Add(downLine);
-                root_Canvas.Children.Add(sideLine);
+                DrawBorders();
                 int targetCount = generator.GenereteTargets(ref TargetList, objectsHelper.militaries);
                 int avaiationCount = generator.GenerateAviations(ref AviationList);
                 int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList);
@@ -81,7 +61,7 @@ namespace Military
                 button_TargetStats.IsEnabled = false;
                 button_MineThowerStats.IsEnabled = false;
                 button_AviationStats.IsEnabled = false;
-                button_Generate.IsEnabled = true; 
+                button_Generate.IsEnabled = true;
                 button_Start.IsEnabled = true;
             }
             catch (Exception ex)
@@ -282,6 +262,27 @@ namespace Military
             targetChar.ShowDialog();
         }
 
+
+        private void DrawBorders()
+        {
+            Line downLine = new Line();
+            downLine.X1 = 0;
+            downLine.X2 = 870;
+            downLine.Y1 = 612;
+            downLine.Y2 = 612;
+            downLine.StrokeThickness = 20;
+            Line sideLine = new Line();
+            sideLine.X1 = 850;
+            sideLine.Y1 = 0;
+            sideLine.X2 = 850;
+            sideLine.Y2 = 602;
+            sideLine.StrokeThickness = 24;
+            downLine.Stroke = new SolidColorBrush(Colors.Lime);
+            sideLine.Stroke = new SolidColorBrush(Colors.Yellow);
+            root_Canvas.Children.Add(downLine);
+            root_Canvas.Children.Add(sideLine);
+        }
+
         private void dispatcherTimerWork_Tick(object sender, EventArgs e)
         {
             if (objectsHelper.currentTime == objectsHelper.time + 4)
@@ -290,6 +291,7 @@ namespace Military
                 button_TargetStats.IsEnabled = true;
                 button_MineThowerStats.IsEnabled = true;
                 button_AviationStats.IsEnabled = true;
+                SafeExit();
                 ShowTargetsStats();
                 objectsHelper.timer.Stop();
                 objectsHelper.timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);

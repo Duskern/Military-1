@@ -76,7 +76,7 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < avaiationCount +3);
+            while (currentCount < avaiationCount + 1);
             return AviationList.Count;
         }
 
@@ -92,7 +92,7 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < mineThowerCount+3);
+            while (currentCount < mineThowerCount+ 1);
             return MineThowerList.Count;
         }
 
