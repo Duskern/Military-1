@@ -37,39 +37,57 @@ namespace Military
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
             currentTime = 0;
-            while (currentTime < commonTime)
+            int TargetIndex = 0;
+            while (currentTime <= commonTime)
             {
-                int TargetIndex = Random.Next(Targets.Count);
-                if (Targets[TargetIndex].HealthPoints > 25 && (Targets[TargetIndex].GetType() == typeof(Target)))
+                if (StopThowersTime(commonTime))
                 {
-                    if (CountShell > 0)
+                    return;
+                }
+                else
+                {
+                    TargetIndex = Random.Next(Targets.Count);
+                    while (Targets[TargetIndex].GetType() != typeof(Target))
                     {
-                        Thread.Sleep(Random.Next(245, 270));
-                        if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
+                        TargetIndex = Random.Next(Targets.Count);
+                    }
+                    if (Targets[TargetIndex].HealthPoints > 25)
+                    {
+                        if (CountShell > 0)
                         {
-                            CountDestroyed++;
-                        }
-                        Targets[TargetIndex].HealthPoints -= damage_degree;
-                        CountShell--;
-                        CountHit++;
-                        try
-                        {
+                            Thread.Sleep(Random.Next(120, 170));
+                            if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
+                            {
+                                CountDestroyed++;
+                            }
+                            Targets[TargetIndex].HealthPoints -= damage_degree;
+                            CountShell--;
+                            CountHit++;
                             DrawingAvia.Invoke(this);
                         }
-                        catch (Exception) { }
                     }
                 }
             }
+        }
+
+        private void dispatcherTimerWork_Tick(object sender, EventArgs e)
+        {
+            currentTime++;
+        }
+
+        private bool StopThowersTime(double commonTime)
+        {
             if (currentTime == commonTime)
             {
                 timer.Tick -= new EventHandler(dispatcherTimerWork_Tick);
                 timer.Stop();
-                return;
+                return true;
             }
-        }
-            private void dispatcherTimerWork_Tick(object sender, EventArgs e)
+            else
             {
-                currentTime++;
+                return false;
             }
+        } 
+
     }            
 } 

@@ -112,6 +112,7 @@
     <Compile Include="MineThowerStats.xaml.cs">
       <DependentUpon>MineThowerStats.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ObjectsHelper.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="TargetStats.xaml.cs">
       <DependentUpon>TargetStats.xaml</DependentUpon>

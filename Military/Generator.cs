@@ -22,85 +22,46 @@ namespace Military
         public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
         {
             TargetList = new ObservableCollection<Target>();
-            int targetCount = random.Next(10, militaries);
-            if (targetCount>20)
-            {
-                targetCount -= 10;
-            }
             int currentCount = 0;
             int less = 0;
-            int code = 1;
-            while (currentCount < targetCount)
+            int code = 0;
+            int x0 = 0, y0 = 10, xMax = 840, yMax = 600;
+            while (y0 < yMax)
             {
-                int x = random.Next(30, 820);
-                int y = random.Next(35, 577);
-                int valueMiss = random.Next(1, 30);
-                if (valueMiss == 3 )
+                int valueMiss = random.Next(1, 40);
+                if (valueMiss == 3 || valueMiss == 7)
                 {
-                    Target target = new Target(x, y, code);
-                    if (TargetList.Count == 0)
+                    if (x0 >= xMax)
                     {
-                        TargetList.Add(target);
-                        currentCount++;
-                        code++;
+                        x0 = 0;
+                        y0 += 30;
                     }
-                    bool checkUnique = true;
-                    foreach (Target tempTarget in TargetList)
+                    if (y0 <= yMax)
                     {
-                        if (target.X > tempTarget.X - 40 && target.X < tempTarget.X + 40 &&
-                            target.Y > tempTarget.Y - 40 && target.Y < tempTarget.Y + 40)
-                        {
-                            checkUnique = false;
-                        }
-                    }
-                    if (checkUnique)
-                    {
+                        Target target = new Target(x0, y0 + 7, code);
                         TargetList.Add(target);
+                        x0 += 30;
                         currentCount++;
                         code++;
                     }
                 }
                 else
                 {
-                    if (TargetList.Count == 0)
+                    if (x0 >= xMax)
                     {
-                        TargetList.Add(new EmptyTarget(x, y, 0));
+                        x0 = 0;
+                        y0 += 30;
                     }
-                    bool checkUniqueEmpty = true;
-                    foreach (Target tempTarget in TargetList)
+                    if (y0 <= yMax)
                     {
-                        if (x > tempTarget.X - 50 && x < tempTarget.X + 50 &&
-                            y > tempTarget.Y - 50 && y < tempTarget.Y + 50)
-                        {
-                            checkUniqueEmpty = false;
-                        }
-                    }
-                    if (checkUniqueEmpty)
-                    {
-                        TargetList.Add(new EmptyTarget(x, y, 0));
-                        less++;
-                    }
-                    x = random.Next(30, 820);
-                    y = random.Next(35, 577);
-                    checkUniqueEmpty = true;
-                    foreach (Target tempTarget in TargetList)
-                    {
-                        if (x > tempTarget.X - 50 && x < tempTarget.X + 50 &&
-                            y > tempTarget.Y - 50 && y < tempTarget.Y + 50)
-                        {
-                            checkUniqueEmpty = false;
-                        }
-                    }
-                    if (checkUniqueEmpty)
-                    {
-                        TargetList.Add(new EmptyTarget(x, y, 0));
+                        TargetList.Add(new EmptyTarget(x0, y0 - 8, 0));
+                        x0 += 30;
                         less++;
                     }
                 }
             }
-            int count = TargetList.Count - less;
-            trueCount = count;
-            return count;
+            trueCount = currentCount - 1;
+            return trueCount;
         }
 
         public int GenerateAviations(ref ObservableCollection<Aviation> AviationList)
@@ -115,7 +76,7 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < avaiationCount);
+            while (currentCount < avaiationCount +3);
             return AviationList.Count;
         }
 
@@ -131,7 +92,7 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < mineThowerCount);
+            while (currentCount < mineThowerCount+3);
             return MineThowerList.Count;
         }
 
@@ -171,31 +132,29 @@ namespace Military
             }
             else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                 return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 55 && target.HealthPoints == 50)
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(56));
                 return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                 return new SolidColorBrush(randomColor);
             }
             else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                 return new SolidColorBrush(randomColor);
             }
             else
             {
-                target.HealthPoints = 100;
-                Color randomColor = Color.FromRgb((byte)random.Next(105, 256), (byte)random.Next(105, 256), (byte)random.Next(105, 256));
+                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                 return new SolidColorBrush(randomColor);
             }
         }
-
     }
 }
