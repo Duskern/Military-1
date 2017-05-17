@@ -11,8 +11,6 @@ using System.Windows.Threading;
 namespace Military
 {
     public delegate void DeleGateDraw(object sender);
-    public delegate void ItemEnabled(object sender);
-    public delegate void DeleGateDrawEmpty(object sender); 
 
     public class MineThower
     {
@@ -47,9 +45,9 @@ namespace Military
                 }
                 else
                 {
-                    Thread.Sleep(Random.Next(130, 160));
-                    TargetIndex = Random.Next(Targets.Count);
+                    TargetIndex = Random.Next(0, Targets.Count);
                     int damage = Random.Next(35, 45);
+                    Thread.Sleep(Random.Next(75, 100));
                     Targets[TargetIndex].HealthPoints -= damage;
                     CountHit++;
                     DrawingTarget.Invoke(this);

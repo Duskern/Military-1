@@ -46,7 +46,7 @@ namespace Military
                 }
                 else
                 {
-                    TargetIndex = Random.Next(Targets.Count);
+                    TargetIndex = Random.Next(0,Targets.Count);
                     while (Targets[TargetIndex].GetType() != typeof(Target))
                     {
                         TargetIndex = Random.Next(Targets.Count);
@@ -55,7 +55,7 @@ namespace Military
                     {
                         if (CountShell > 0)
                         {
-                            Thread.Sleep(Random.Next(120, 170));
+                            Thread.Sleep(Random.Next(125, 155));
                             if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
                             {
                                 CountDestroyed++;
