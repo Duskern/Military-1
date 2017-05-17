@@ -45,7 +45,7 @@ namespace Military
                 }
                 else
                 {
-                    TargetIndex = Random.Next(0, Targets.Count);
+                    TargetIndex = Random.Next(0, Targets.Count+ Random.Next(0,5));
                     int damage = Random.Next(35, 45);
                     Thread.Sleep(Random.Next(75, 100));
                     Targets[TargetIndex].HealthPoints -= damage;

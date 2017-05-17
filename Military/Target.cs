@@ -21,7 +21,7 @@ namespace Military
 
         public int Y { get; set; }    
 
-        public virtual int HealthPoints
+        public int HealthPoints
         {
             get
             {

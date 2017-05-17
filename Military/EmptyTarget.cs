@@ -11,7 +11,7 @@ namespace Military
     {
         private object threadLock = new object();
 
-        public override int HealthPoints
+        public new int HealthPoints
         {
             get
             {

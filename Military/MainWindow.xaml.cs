@@ -126,7 +126,7 @@ namespace Military
             foreach (var item in objectsHelper.Mine_ThrowersThreads)
             {
                 item.Start();
-                Thread.Sleep(50);
+                Thread.Sleep(20);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Military
             foreach (var item in objectsHelper.AviationsThreads)
             { 
                 item.Start();
-                Thread.Sleep(50);
+                Thread.Sleep(20);
             }
         }
 

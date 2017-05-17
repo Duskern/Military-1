@@ -72,6 +72,7 @@ namespace Military
             AviationList = new ObservableCollection<Aviation>();
             do
             {
+                random = new Random();
                 AviationList.Add(new Aviation(random, code));
                 currentCount++;
                 code++;
@@ -88,6 +89,7 @@ namespace Military
             MineThowerList = new ObservableCollection<MineThower>();
             do
             {
+                random = new Random();
                 MineThowerList.Add(new MineThower(random, code));
                 currentCount++;
                 code++;
@@ -130,26 +132,26 @@ namespace Military
             {
                 return new SolidColorBrush(Colors.Black);
             }
-            else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
-            {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                return new SolidColorBrush(randomColor);
-            }
-            else if (target.HealthPoints < 55 && target.HealthPoints == 50)
-            {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(56));
-                return new SolidColorBrush(randomColor);
-            }
-            else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
-            {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                return new SolidColorBrush(randomColor);
-            }
-            else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
-            {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                return new SolidColorBrush(randomColor);
-            }
+            //else if (target.HealthPoints < 100 && target.HealthPoints >= 55)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+            //    return new SolidColorBrush(randomColor);
+            //}
+            //else if (target.HealthPoints < 55 && target.HealthPoints == 50)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(56));
+            //    return new SolidColorBrush(randomColor);
+            //}
+            //else if (target.HealthPoints < 50 && target.HealthPoints >= 25)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+            //    return new SolidColorBrush(randomColor);
+            //}
+            //else if (target.HealthPoints < 25 && target.HealthPoints >= 1)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+            //    return new SolidColorBrush(randomColor);
+            //}
             else
             {
                 Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
