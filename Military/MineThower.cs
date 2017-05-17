@@ -45,9 +45,9 @@ namespace Military
                 }
                 else
                 {
-                    TargetIndex = Random.Next(0, Targets.Count+ Random.Next(0,5));
+                    TargetIndex = Random.Next(0, Targets.Count-1);
                     int damage = Random.Next(35, 45);
-                    Thread.Sleep(Random.Next(75, 100));
+                    Thread.Sleep(Random.Next(200, 220));
                     Targets[TargetIndex].HealthPoints -= damage;
                     CountHit++;
                     DrawingTarget.Invoke(this);

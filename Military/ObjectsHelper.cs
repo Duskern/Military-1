@@ -25,10 +25,11 @@ namespace Military
         public PointCollection pointsCollection { get; set; }
         public int currentTime { get; set; }
         public Polyline TargetUI { get; set; }
+        Random random = new Random();
 
         public ObjectsHelper()
         {
-            militaries = 70; 
+            militaries = random.Next(5,70); 
             time = 10;
             EmptyUI = new Ellipse();
             nextOption = new TextBlock();

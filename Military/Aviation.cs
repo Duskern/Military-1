@@ -55,7 +55,7 @@ namespace Military
                     {
                         if (CountShell > 0)
                         {
-                            Thread.Sleep(Random.Next(125, 155));
+                            Thread.Sleep(Random.Next(300, 345));
                             if (Targets[TargetIndex].HealthPoints > 25 && Targets[TargetIndex].HealthPoints <= 50)
                             {
                                 CountDestroyed++;
