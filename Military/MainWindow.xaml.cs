@@ -25,6 +25,7 @@ namespace Military
         ObjectsHelper objectsHelper = new ObjectsHelper();
         Generator generator = new Generator();
         private object threadLock = new object();
+        private const int maxTargetCount = 70;
         public ObservableCollection<Target> TargetList = new ObservableCollection<Target>();
         public ObservableCollection<Aviation> AviationList = new ObservableCollection<Aviation>();
         public ObservableCollection<MineThower> MineThowerList = new ObservableCollection<MineThower>();
@@ -49,7 +50,7 @@ namespace Military
             {
                 root_Canvas.Children.Clear();
                 DrawBorders();
-                int targetCount = generator.GenereteTargets(ref TargetList, objectsHelper.militaries);
+                int targetCount = generator.GenereteTargets(ref TargetList, maxTargetCount);
                 int avaiationCount = generator.GenerateAviations(ref AviationList);
                 int mineThowerCount = generator.GenerateMineThowers(ref MineThowerList);
                 count_MineThowers.Content = "Count mine-thowers : " + Convert.ToInt32(mineThowerCount);

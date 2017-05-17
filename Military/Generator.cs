@@ -22,49 +22,7 @@ namespace Military
         public int GenereteTargets(ref ObservableCollection<Target> TargetList , int militaries)
         {
             TargetList = new ObservableCollection<Target>();
-            //int currentCount = 0;
-            //int less = 0;
-            //int code = 0;
-            //int x0 = 0, y0 = 10, xMax = 840, yMax = 600;
-            //while (y0 < yMax)
-            //{
-            //    int valueMiss = random.Next(1, 40);
-            //    if (valueMiss == 3 || valueMiss == 7)
-            //    {
-            //        if (x0 >= xMax)
-            //        {
-            //            x0 = 0;
-            //            y0 += 30;
-            //        }
-            //        if (y0 <= yMax)
-            //        {
-            //            Target target = new Target(x0, y0 + 7, code);
-            //            TargetList.Add(target);
-            //            x0 += 30;
-            //            currentCount++;
-            //            code++;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (x0 >= xMax)
-            //        {
-            //            x0 = 0;
-            //            y0 += 30;
-            //        }
-            //        if (y0 <= yMax)
-            //        {
-            //            TargetList.Add(new EmptyTarget(x0, y0 - 8, 0));
-            //            x0 += 30;
-            //            less++;
-            //        }
-            //    }
-            //}
-            //trueCount = currentCount - 1;
-            //return trueCount; 
-
-            TargetList = new ObservableCollection<Target>();
-            int targetCount = random.Next(10, militaries);
+            int targetCount = random.Next(25, militaries);
             int currentCount = 0;
             int less = 0;
             int code = 0;
@@ -129,7 +87,7 @@ namespace Military
         public int GenerateAviations(ref ObservableCollection<Aviation> AviationList)
         {
             int currentCount = 0;
-            int avaiationCount = random.Next(2, trueCount/4)  + 1;
+            int avaiationCount = random.Next(2, trueCount/4);
             int code = 0;
             AviationList = new ObservableCollection<Aviation>();
             do
@@ -139,14 +97,14 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < avaiationCount + 1);
+            while (currentCount < avaiationCount);
             return AviationList.Count;
         }
 
         public int GenerateMineThowers(ref ObservableCollection<MineThower> MineThowerList)
         {
             int currentCount = 0;
-            int mineThowerCount = random.Next(2, trueCount/4)+1;
+            int mineThowerCount = random.Next(2, trueCount/4);
             int code = 0;
             MineThowerList = new ObservableCollection<MineThower>();
             do
@@ -156,7 +114,7 @@ namespace Military
                 currentCount++;
                 code++;
             }
-            while (currentCount < mineThowerCount + 1);
+            while (currentCount < mineThowerCount);
             return MineThowerList.Count;
         }
 
@@ -222,3 +180,43 @@ namespace Military
         }
     }
 }
+//int currentCount = 0;
+//int less = 0;
+//int code = 0;
+//int x0 = 0, y0 = 10, xMax = 840, yMax = 600;
+//while (y0 < yMax)
+//{
+//    int valueMiss = random.Next(1, 40);
+//    if (valueMiss == 3 || valueMiss == 7)
+//    {
+//        if (x0 >= xMax)
+//        {
+//            x0 = 0;
+//            y0 += 30;
+//        }
+//        if (y0 <= yMax)
+//        {
+//            Target target = new Target(x0, y0 + 7, code);
+//            TargetList.Add(target);
+//            x0 += 30;
+//            currentCount++;
+//            code++;
+//        }
+//    }
+//    else
+//    {
+//        if (x0 >= xMax)
+//        {
+//            x0 = 0;
+//            y0 += 30;
+//        }
+//        if (y0 <= yMax)
+//        {
+//            TargetList.Add(new EmptyTarget(x0, y0 - 8, 0));
+//            x0 += 30;
+//            less++;
+//        }
+//    }
+//}
+//trueCount = currentCount - 1;
+//return trueCount; 
